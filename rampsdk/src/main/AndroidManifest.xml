@@ -24,6 +24,14 @@
                 <data
                     android:host="ri-widget-dev.firebaseapp.com"
                     android:scheme="ramp" />
+
+                <data
+                    android:host="ri-widget-staging.firebaseapp.com"
+                    android:scheme="ramp" />
+
+                <data
+                    android:host="buy.ramp.network"
+                    android:scheme="ramp" />
             </intent-filter>
 
         </activity>

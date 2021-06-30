@@ -24,11 +24,10 @@ class MainActivity : AppCompatActivity() {
                 hostLogoUrl = "https://example.com/logo.png",
                 hostAppName = "My App",
                 userAddress = "0x4b7f8e04b82ad7f9e4b4cc9e1f81c5938e1b719f",
-                url = "https://ri-widget-dev.firebaseapp.com/",
+                url = "https://ri-widget-staging.firebaseapp.com/",
                 swapAsset = "ETH",
                 fiatCurrency = "USD",
                 fiatValue = "10",
-                userEmailAddress = "test@example.com",
                 selectedCountryCode = "US"
             )
 
