@@ -23,7 +23,6 @@ class RampSDK(private val context: Context) {
     }
 
     fun startTransaction(config: Config) {
-        release()
         EventBus.getDefault().register(this)
         val intent = Intent(context, RampWidgetActivity::class.java)
         intent.putExtra(
