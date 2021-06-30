@@ -1,0 +1,3 @@
+include ':rampsdk'
+rootProject.name='Ramp SDK'
+include ':demo'
