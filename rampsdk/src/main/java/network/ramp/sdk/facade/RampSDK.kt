@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class RampSDK(private val context: Context) {
 
-    var callback: RampCallback? = null
+    private var callback: RampCallback? = null
 
     init {
         if (BuildConfig.DEBUG) {
@@ -22,7 +22,9 @@ class RampSDK(private val context: Context) {
         }
     }
 
-    fun startTransaction(config: Config) {
+    fun startTransaction(config: Config, callback: RampCallback) {
+        release()
+        this.callback = callback
         EventBus.getDefault().register(this)
         val intent = Intent(context, RampWidgetActivity::class.java)
         intent.putExtra(

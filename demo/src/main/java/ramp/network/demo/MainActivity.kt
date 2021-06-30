@@ -11,7 +11,7 @@ import network.ramp.sdk.facade.RampSDK
 
 class MainActivity : AppCompatActivity() {
 
-// 2. Initialize the SDK
+    // 2. Initialize the SDK
     private lateinit var rampSdk: RampSDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         rampSdk = RampSDK(this)
 
         button.setOnClickListener {
-// 3. Fill configuration object with your data
+    // 3. Fill configuration object with your data
             val config = Config(
                 hostLogoUrl = "https://example.com/logo.png",
                 hostAppName = "My App",
@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
                 fiatValue = "10",
                 selectedCountryCode = "US"
             )
-// 4. Implement callbacks
-            rampSdk.callback = object : RampCallback {
+    // 4. Implement callbacks
+            val callback = object : RampCallback {
                 override fun onPurchaseFailed() {
 
                 }
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-// 5. Start widget
-            rampSdk.startTransaction(config)
+    // 5. Start widget
+            rampSdk.startTransaction(config, callback)
 
         }
     }
