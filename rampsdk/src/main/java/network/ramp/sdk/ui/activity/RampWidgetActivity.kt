@@ -59,19 +59,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun close() {
         this.finish()
     }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        if (intent != null && intent.data != null && intent.data?.scheme
-                .equals(RAMP_PREFIX)
-        ) {
-            intent.data?.let {
-                webView.post {
-                    webView.loadUrl(HTTPS_SCHEME + it.toString().removePrefix(RAMP_PREFIX))
-                }
-            }
-        }
-    }
+    
 
     override fun onBackPressed() {
         if (webView.canGoBack()) {
