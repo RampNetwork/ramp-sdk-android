@@ -1,5 +1,6 @@
 package network.ramp.sdk.facade
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import network.ramp.sdk.BuildConfig
@@ -12,7 +13,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
-class RampSDK(private val context: Context) {
+class RampSDK {
 
     private var callback: RampCallback? = null
 
@@ -22,15 +23,15 @@ class RampSDK(private val context: Context) {
         }
     }
 
-    fun startTransaction(config: Config, callback: RampCallback) {
+    fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
         release()
         this.callback = callback
         EventBus.getDefault().register(this)
-        val intent = Intent(context, RampWidgetActivity::class.java)
+        val intent = Intent(activity, RampWidgetActivity::class.java)
         intent.putExtra(
             CONFIG_EXTRA, config
         )
-        context.startActivity(intent)
+        activity.startActivity(intent)
     }
 
     private fun release() {
