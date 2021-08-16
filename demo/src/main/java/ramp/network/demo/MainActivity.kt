@@ -18,12 +18,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rampSdk = RampSDK(this)
+        rampSdk = RampSDK()
 
         button.setOnClickListener {
-    // 3. Fill configuration object with your data
+            // 3. Fill configuration object with your data
             val config = Config(
-                hostLogoUrl = "https://example.com/logo.png",
+                hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",
                 hostAppName = "My App",
                 userAddress = "0x4b7f8e04b82ad7f9e4b4cc9e1f81c5938e1b719f",
                 url = "https://ri-widget-staging.firebaseapp.com/",
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 fiatValue = "10",
                 selectedCountryCode = "US"
             )
-    // 4. Implement callbacks
+            // 4. Implement callbacks
             val callback = object : RampCallback {
                 override fun onPurchaseFailed() {
 
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-    // 5. Start widget
-            rampSdk.startTransaction(config, callback)
+            // 5. Start widget
+            rampSdk.startTransaction(this, config, callback)
 
         }
     }
