@@ -55,7 +55,8 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     }
 
     override fun showDialog() {
-        //Show dialog
+        //TODO() Show dialog in future
+        close()
     }
 
     override fun close() {
@@ -84,7 +85,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun onDestroy() {
         super.onDestroy()
         binding.webView.removeJavascriptInterface(RampSdkJsInterface.RampSdkInterfaceName)
-        EventBus.getDefault().post(EventType.WIDGET_CLOSE)
+        EventBus.getDefault().post(WidgetClose())
     }
 
     private fun returnOnError(message: String) {

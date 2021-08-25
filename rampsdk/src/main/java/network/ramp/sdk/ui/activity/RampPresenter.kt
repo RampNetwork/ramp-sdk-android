@@ -49,8 +49,6 @@ internal class RampPresenter(
                         view.showDialog()
                     else {
                         view.close()
-                        EventBus.getDefault()
-                            .post(WidgetClose())
                     }
                 }
             }

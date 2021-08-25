@@ -53,7 +53,6 @@ class RampSDK {
     @Subscribe(threadMode = ThreadMode.MAIN)
     internal fun onWidgetClosed(event: WidgetClose) {
         callback?.onWidgetClose()
-        release()
     }
 
     private fun initLogging() {
