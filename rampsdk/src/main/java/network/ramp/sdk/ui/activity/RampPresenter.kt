@@ -26,6 +26,7 @@ internal class RampPresenter(
                 .withSubtype(PurchasedFailed::class.java, EventType.PURCHASE_FAILED.name)
                 .withSubtype(PurchasedCreated::class.java, EventType.PURCHASE_CREATED.name)
                 .withSubtype(WidgetConfigDone::class.java, EventType.WIDGET_CONFIG_DONE.name)
+                .withSubtype(BackButtonPressed::class.java,EventType.BACK_BUTTON_PRESSED.name)
                 .withSubtype(KycInit::class.java, EventType.KYC_INIT.name)
                 .withSubtype(KycStarted::class.java, EventType.KYC_STARTED.name)
                 .withSubtype(KycFinished::class.java, EventType.KYC_FINISHED.name)
@@ -166,6 +167,12 @@ internal class RampPresenter(
                     kycInitPayload?.verificationId ?: 0
                 )
             )
+        )
+    }
+
+    fun onBackPressed() {
+        postMessage(
+            BackButtonPressed("")
         )
     }
 
