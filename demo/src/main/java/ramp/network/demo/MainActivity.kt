@@ -2,25 +2,30 @@ package ramp.network.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampCallback
 import network.ramp.sdk.facade.RampSDK
+import ramp.network.demo.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     // 2. Initialize the SDK
     private lateinit var rampSdk: RampSDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         rampSdk = RampSDK()
 
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
             // 3. Fill configuration object with your data
             val config = Config(
                 hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",

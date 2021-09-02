@@ -1,11 +1,9 @@
 package network.ramp.sdk.ui.activity
 
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.widget_activity.*
-import network.ramp.sdk.R
+import network.ramp.sdk.databinding.WidgetActivityBinding
 import network.ramp.sdk.events.RampSdkJsInterface
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
@@ -19,6 +17,8 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     lateinit var rampPresenter: RampPresenter
 
+    private lateinit var binding: WidgetActivityBinding
+
     private lateinit var config: Config
 
     private val jsInterface = RampSdkJsInterface(
@@ -29,10 +29,12 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.widget_activity)
+        binding = WidgetActivityBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         rampPresenter = RampPresenter(this, this)
-        webView.setupWebView(RampWidgetWebViewClient(progressBar), jsInterface)
+        binding.webView.setupWebView(RampWidgetWebViewClient(binding.progressBar), jsInterface)
 
         intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
             config = it
@@ -40,30 +42,34 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
-            webView.loadUrl(rampPresenter.buildUrl(config))
+            binding.webView.loadUrl(rampPresenter.buildUrl(config))
         }
 
     }
 
     override fun sendPostMessage(data: String) {
         val url = "javascript:(function f() { window.postMessage($data, \"*\"); })()"
-        webView.post {
-            webView.loadUrl(url)
+        binding.webView.post {
+            binding.webView.loadUrl(url)
         }
     }
 
     override fun showDialog() {
-        //Show dialog
+        //TODO() Show dialog in future
+        close()
     }
 
     override fun close() {
         this.finish()
     }
-    
+
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
+
+        rampPresenter.onBackPressed()
+
+        if (binding.webView.canGoBack()) {
+            binding.webView.goBack()
         } else {
             super.onBackPressed()
         }
@@ -71,18 +77,18 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        webView.saveState(outState)
+        binding.webView.saveState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        webView.restoreState(savedInstanceState)
+        binding.webView.restoreState(savedInstanceState)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        webView.removeJavascriptInterface(RampSdkJsInterface.RampSdkInterfaceName)
-        EventBus.getDefault().post(EventType.WIDGET_CLOSE)
+        binding.webView.removeJavascriptInterface(RampSdkJsInterface.RampSdkInterfaceName)
+        EventBus.getDefault().post(WidgetClose())
     }
 
     private fun returnOnError(message: String) {
