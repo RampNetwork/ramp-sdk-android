@@ -13,6 +13,8 @@ internal data class OpenLink(var payload: OpenLinkPayload) : Event(EventType.OPE
 
 internal data class WidgetConfigDone(var payload: String?) : Event(EventType.WIDGET_CONFIG_DONE)
 
+internal data class BackButtonPressed(var payload: String?): Event(EventType.BACK_BUTTON_PRESSED)
+
 internal data class KycInit(var payload: KycInitPayload) : Event(EventType.KYC_INIT)
 
 internal data class KycStarted(var payload: KycStartedPayload) : Event(EventType.KYC_STARTED)
@@ -31,6 +33,7 @@ enum class EventType {
     OPEN_LINK,
     KYC_INIT,
     WIDGET_CONFIG_DONE,
+    BACK_BUTTON_PRESSED,
     PURCHASE_FAILED,
     PURCHASE_CREATED,
     KYC_STARTED,
