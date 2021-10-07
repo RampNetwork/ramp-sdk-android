@@ -65,14 +65,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
 
     override fun onBackPressed() {
-
         rampPresenter.onBackPressed()
-
-        if (binding.webView.canGoBack()) {
-            binding.webView.goBack()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
