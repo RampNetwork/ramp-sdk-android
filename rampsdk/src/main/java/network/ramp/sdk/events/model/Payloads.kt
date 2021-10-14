@@ -61,7 +61,7 @@ data class Purchase(
     val receiverAddress: String, // blockchain address of the buyer
     val assetExchangeRate: Double,
     val purchaseViewToken: String,
-    val actions: List<Action>,
+    val actions: List<Action>? = null,
     val status: String, // purchase status
     val paymentMethodType: String // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
 )

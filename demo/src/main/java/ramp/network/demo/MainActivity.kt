@@ -2,6 +2,7 @@ package ramp.network.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampCallback
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             // 4. Implement callbacks
             val callback = object : RampCallback {
                 override fun onPurchaseFailed() {
-
+                    Log.d("MainActivity", "onPurchaseFailed")
                 }
 
                 override fun onPurchaseCreated(
@@ -48,11 +49,11 @@ class MainActivity : AppCompatActivity() {
                     purchaseViewToken: String,
                     apiUrl: String
                 ) {
-
+                    Log.d("MainActivity", "onPurchaseCreated")
                 }
 
                 override fun onWidgetClose() {
-
+                    Log.d("MainActivity", "onWidgetClose")
                 }
             }
             // 5. Start widget
