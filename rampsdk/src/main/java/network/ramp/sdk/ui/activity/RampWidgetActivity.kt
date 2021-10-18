@@ -3,17 +3,23 @@ package network.ramp.sdk.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import network.ramp.sdk.databinding.WidgetActivityBinding
+import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.RampSdkJsInterface
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
 
 internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
+
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     lateinit var rampPresenter: RampPresenter
 
@@ -81,7 +87,9 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun onDestroy() {
         super.onDestroy()
         binding.webView.removeJavascriptInterface(RampSdkJsInterface.RampSdkInterfaceName)
-        EventBus.getDefault().post(WidgetClose())
+        scope.launch {
+            EventBus.invokeEvent(WidgetClose())
+        }
     }
 
     private fun returnOnError(message: String) {

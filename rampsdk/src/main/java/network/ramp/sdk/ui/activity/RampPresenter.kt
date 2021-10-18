@@ -6,15 +6,20 @@ import com.passbase.passbase_sdk.PassbaseSDKListener
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.facade.Config
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 internal class RampPresenter(
     private val view: Contract.View,
     private val context: Context
 ) : Contract.Presenter, PassbaseSDKListener {
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private var kycInitPayload: KycInitPayload? = null
 
@@ -40,7 +45,7 @@ internal class RampPresenter(
 
     override fun handlePostMessage(json: String) {
         val event = moshi
-            .adapter<Event>(Event::class.java)
+            .adapter(Event::class.java)
             .fromJson(json)
 
         when (event?.type) {
@@ -67,14 +72,16 @@ internal class RampPresenter(
             }
 
             EventType.PURCHASE_FAILED -> {
-                EventBus.getDefault()
-                    .post(PurchasedFailed(null))
+                scope.launch {
+                    EventBus.invokeEvent(PurchasedFailed(null))
+                }
             }
 
             EventType.PURCHASE_CREATED -> {
                 (event as? PurchasedCreated)?.payload?.let {
-                    EventBus.getDefault()
-                        .post(it)
+                    scope.launch {
+                        EventBus.invokeEvent(PurchasedCreated(it))
+                    }
                 }
             }
             else -> Timber.w("Unhandled event $json")
@@ -120,7 +127,7 @@ internal class RampPresenter(
         Timber.e("Passbase onError $errorCode")
 
         val eventJson = moshi
-            .adapter<Event>(Event::class.java)
+            .adapter(Event::class.java)
             .toJson(
                 when (errorCode) {
                     PASSBASE_CANCELLED_BY_USER -> KycAborted(
@@ -137,7 +144,7 @@ internal class RampPresenter(
 
     override fun onFinish(identityAccessKey: String) {
         val eventJson = moshi
-            .adapter<Event>(Event::class.java)
+            .adapter(Event::class.java)
             .toJson(
                 KycFinished(
                     KycFinishedPayload(
@@ -178,7 +185,7 @@ internal class RampPresenter(
 
     private fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
-            .adapter<Event>(Event::class.java)
+            .adapter(Event::class.java)
             .toJson(event)
         view.sendPostMessage(eventJson)
     }

@@ -1,32 +1,33 @@
 package network.ramp.sdk.facade
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import network.ramp.sdk.BuildConfig
-import network.ramp.sdk.events.model.PurchaseCreatedPayload
-import network.ramp.sdk.events.model.PurchasedFailed
-import network.ramp.sdk.events.model.WidgetClose
+import network.ramp.sdk.events.EventBus
+import network.ramp.sdk.events.model.*
 import network.ramp.sdk.ui.activity.RampWidgetActivity
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 class RampSDK {
 
     private var callback: RampCallback? = null
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     init {
         if (BuildConfig.DEBUG) {
             initLogging()
         }
+        handleEvents()
     }
 
     fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
         release()
         this.callback = callback
-        EventBus.getDefault().register(this)
         val intent = Intent(activity, RampWidgetActivity::class.java)
         intent.putExtra(
             CONFIG_EXTRA, config
@@ -34,25 +35,34 @@ class RampSDK {
         activity.startActivity(intent)
     }
 
+    private fun handleEvents() {
+        scope.launch {
+            EventBus.events.collectLatest {
+                when (it.type) {
+                    EventType.WIDGET_CLOSE -> {
+                        callback?.onWidgetClose()
+                    }
+                    EventType.PURCHASE_CREATED -> {
+                        val payload = (it as PurchasedCreated).payload
+                        callback?.onPurchaseCreated(
+                            payload.purchase,
+                            payload.purchaseViewToken,
+                            payload.apiUrl
+                        )
+                    }
+                    EventType.PURCHASE_FAILED -> {
+                        callback?.onPurchaseFailed()
+                    }
+                    else -> {
+                        Timber.w("Unhandled Event")
+                    }
+                }
+            }
+        }
+    }
+
     private fun release() {
         callback = null
-        EventBus.getDefault().unregister(this)
-        EventBus.clearCaches()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    internal fun onEvent(payload: PurchaseCreatedPayload) {
-        callback?.onPurchaseCreated(payload.purchase, payload.purchaseViewToken, payload.apiUrl)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    internal fun onPurchaseFailed(event: PurchasedFailed) {
-        callback?.onPurchaseFailed()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    internal fun onWidgetClosed(event: WidgetClose) {
-        callback?.onWidgetClose()
     }
 
     private fun initLogging() {

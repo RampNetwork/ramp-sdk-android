@@ -1,9 +1,12 @@
 package network.ramp.sdk.events.model
 
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class OpenLinkPayload(val linkType: String, val url: String)
 
 
+@JsonClass(generateAdapter = true)
 data class WidgetClosePayload(
     val showAlert: Boolean,
     val descriptionText: String? = null,
@@ -11,6 +14,7 @@ data class WidgetClosePayload(
     val rejectText: String? = null
 )
 
+@JsonClass(generateAdapter = true)
 internal data class KycInitPayload(
     val email: String,
     val countryCode: String,
@@ -20,29 +24,36 @@ internal data class KycInitPayload(
     val provider: String
 )
 
+@JsonClass(generateAdapter = true)
 internal data class KycStartedPayload(var verificationId: Int = 0)
 
+@JsonClass(generateAdapter = true)
 internal data class KycFinishedPayload(
     var verificationId: Int = 0,
     var identityAccessKey: String = ""
 )
 
+@JsonClass(generateAdapter = true)
 internal data class KycAbortedPayload(var verificationId: Int = 0)
 
+@JsonClass(generateAdapter = true)
 internal data class KycSubmittedPayload(
     var verificationId: Int = 0,
     var identityAccessKey: String = ""
 )
 
+@JsonClass(generateAdapter = true)
 internal data class KycErrorPayload(var verificationId: Int = 0)
 
 
+@JsonClass(generateAdapter = true)
 data class PurchaseCreatedPayload(
     val purchase: Purchase,
     val purchaseViewToken: String,
     val apiUrl: String
 )
 
+@JsonClass(generateAdapter = true)
 data class Purchase(
     val endTime: String, // purchase validity time, ISO date-time string
     val escrowAddress: String? = null, // filled only for escrow-backend purchases
@@ -61,16 +72,11 @@ data class Purchase(
     val receiverAddress: String, // blockchain address of the buyer
     val assetExchangeRate: Double,
     val purchaseViewToken: String,
-    val actions: List<Action>,
     val status: String, // purchase status
     val paymentMethodType: String // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
 )
 
-data class Action(
-    val newStatus: String,
-    val timestamp: String
-)
-
+@JsonClass(generateAdapter = true)
 data class Asset(
     val address: String? = null, // 0x-prefixed address for ERC-20 tokens, `null` for ETH
     val symbol: String, // asset symbol, for example `ETH`, `DAI`, `USDC`
