@@ -55,25 +55,30 @@ data class PurchaseCreatedPayload(
 
 @JsonClass(generateAdapter = true)
 data class Purchase(
+    val id: String,
     val endTime: String, // purchase validity time, ISO date-time string
+    @Deprecated("This parameter will be removed in future release")
     val escrowAddress: String? = null, // filled only for escrow-backend purchases
     val cryptoAmount: String, // number-string, in wei or token units
     val fiatCurrency: String, // three-letter currency code
     val fiatValue: Long, // total value the user pays for the purchase, in fiatCurrency
-    val assetExchangeRateEur: Double, // price of 1 whole token of purchased asset, in fiatCurrency
+    @Deprecated("This parameter will be removed in future")
+    val assetExchangeRateEur: Double,
+    @Deprecated("This parameter will be removed in future")
     val fiatExchangeRateEur: Long,
     val baseRampFee: Double, // base Ramp fee before any modifications, in fiatCurrency
     val networkFee: Double, // network fee for transferring the purchased asset, in fiatCurrency
     val appliedFee: Double, // final fee the user pays (included in fiatValue), in fiatCurrency
     val createdAt: String, // ISO date-time string
     val updatedAt: String, // ISO date-time string
-    val id: String,
     val asset: Asset, // description of the purchased asset (address, symbol, name, decimals)
     val receiverAddress: String, // blockchain address of the buyer
-    val assetExchangeRate: Double,
+    val assetExchangeRate: Double,// price of 1 whole token of purchased asset, in fiatCurrency
+    @Deprecated("This parameter will be removed in future")
     val purchaseViewToken: String,
     val status: String, // purchase status
-    val paymentMethodType: String // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
+    val paymentMethodType: String, // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
+    val finalTxHash: String? = null // hash of the crypto transfer blockchain transaction, filled once available
 )
 
 @JsonClass(generateAdapter = true)
