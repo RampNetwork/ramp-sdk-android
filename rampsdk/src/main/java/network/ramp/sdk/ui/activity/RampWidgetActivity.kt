@@ -50,7 +50,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             Timber.d(rampPresenter.buildUrl(config))
             binding.webView.loadUrl(rampPresenter.buildUrl(config))
         }
-
     }
 
     override fun sendPostMessage(data: String) {
@@ -71,7 +70,9 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
 
     override fun onBackPressed() {
-        rampPresenter.onBackPressed()
+        rampPresenter.onBackPressed {
+            super.onBackPressed()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
