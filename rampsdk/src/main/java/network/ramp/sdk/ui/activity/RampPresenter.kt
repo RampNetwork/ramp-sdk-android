@@ -22,6 +22,7 @@ internal class RampPresenter(
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private var kycInitPayload: KycInitPayload? = null
+    private var configDone = false
 
     private val moshi: Moshi = Moshi.Builder()
         .add(
@@ -31,7 +32,7 @@ internal class RampPresenter(
                 .withSubtype(PurchasedFailed::class.java, EventType.PURCHASE_FAILED.name)
                 .withSubtype(PurchasedCreated::class.java, EventType.PURCHASE_CREATED.name)
                 .withSubtype(WidgetConfigDone::class.java, EventType.WIDGET_CONFIG_DONE.name)
-                .withSubtype(BackButtonPressed::class.java,EventType.BACK_BUTTON_PRESSED.name)
+                .withSubtype(BackButtonPressed::class.java, EventType.BACK_BUTTON_PRESSED.name)
                 .withSubtype(KycInit::class.java, EventType.KYC_INIT.name)
                 .withSubtype(KycStarted::class.java, EventType.KYC_STARTED.name)
                 .withSubtype(KycFinished::class.java, EventType.KYC_FINISHED.name)
@@ -83,6 +84,9 @@ internal class RampPresenter(
                         EventBus.invokeEvent(PurchasedCreated(it))
                     }
                 }
+            }
+            EventType.WIDGET_CONFIG_DONE -> {
+                configDone = true
             }
             else -> Timber.w("Unhandled event $json")
         }
@@ -177,10 +181,13 @@ internal class RampPresenter(
         )
     }
 
-    fun onBackPressed() {
-        postMessage(
-            BackButtonPressed("")
-        )
+    fun onBackPressed(systemOnBackPressed: () -> Unit) {
+        if (configDone)
+            postMessage(
+                BackButtonPressed("")
+            )
+        else
+            systemOnBackPressed()
     }
 
     private fun <T : Event> postMessage(event: T) {
