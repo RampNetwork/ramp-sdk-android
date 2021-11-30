@@ -39,6 +39,8 @@ internal class RampPresenter(
                 .withSubtype(KycAborted::class.java, EventType.KYC_ABORTED.name)
                 .withSubtype(KycSubmitted::class.java, EventType.KYC_SUBMITTED.name)
                 .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
+                .withSubtype(AppGoingToBackground::class.java, EventType.APP_GOING_TO_BACKGROUND.name)
+                .withSubtype(SavedSession::class.java, EventType.SAVED_SESSION.name)
         )
         .add(KotlinJsonAdapterFactory())
         .build()
@@ -108,6 +110,13 @@ internal class RampPresenter(
                 concatenateIfNotBlank("&hostApiKey=", config.hostApiKey) +
                 "&variant=$VARIANT" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
+    }
+
+    override fun onWidgetPause() {
+        Timber.d("onWidgetStop")
+        postMessage(
+            AppGoingToBackground(null)
+        )
     }
 
     private fun runPassbase(kycInit: KycInitPayload) {

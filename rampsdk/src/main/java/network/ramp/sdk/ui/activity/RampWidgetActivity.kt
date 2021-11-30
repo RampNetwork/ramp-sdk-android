@@ -55,6 +55,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun sendPostMessage(data: String) {
         val url = "javascript:(function f() { window.postMessage($data, \"*\"); })()"
         binding.webView.post {
+            Timber.d("PostMessage $url")
             binding.webView.loadUrl(url)
         }
     }
@@ -68,6 +69,11 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
         this.finish()
     }
 
+    override fun onPause() {
+        rampPresenter.onWidgetPause()
+
+        super.onPause()
+    }
 
     override fun onBackPressed() {
         rampPresenter.onBackPressed {

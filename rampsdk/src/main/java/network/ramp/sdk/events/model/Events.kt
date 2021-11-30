@@ -20,7 +20,7 @@ internal data class OpenLink(var payload: OpenLinkPayload) : Event(EventType.OPE
 internal data class WidgetConfigDone(var payload: String?) : Event(EventType.WIDGET_CONFIG_DONE)
 
 @JsonClass(generateAdapter = true)
-internal data class BackButtonPressed(var payload: String?): Event(EventType.BACK_BUTTON_PRESSED)
+internal data class BackButtonPressed(var payload: String?) : Event(EventType.BACK_BUTTON_PRESSED)
 
 @JsonClass(generateAdapter = true)
 internal data class KycInit(var payload: KycInitPayload) : Event(EventType.KYC_INIT)
@@ -40,6 +40,13 @@ internal data class KycSubmitted(var payload: KycSubmittedPayload) : Event(Event
 @JsonClass(generateAdapter = true)
 internal data class KycError(var payload: KycErrorPayload) : Event(EventType.KYC_ERROR)
 
+@JsonClass(generateAdapter = true)
+internal data class AppGoingToBackground(var payload: String?) :
+    Event(EventType.APP_GOING_TO_BACKGROUND)
+
+@JsonClass(generateAdapter = true)
+internal data class SavedSession(var payload: SavedSessionPayload?) : Event(EventType.SAVED_SESSION)
+
 @JsonClass(generateAdapter = false)
 enum class EventType {
     WIDGET_CLOSE,
@@ -53,6 +60,8 @@ enum class EventType {
     KYC_FINISHED,
     KYC_ABORTED,
     KYC_SUBMITTED,
-    KYC_ERROR
+    KYC_ERROR,
+    APP_GOING_TO_BACKGROUND,
+    SAVED_SESSION
 }
 

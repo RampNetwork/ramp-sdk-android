@@ -89,3 +89,6 @@ data class Asset(
     val decimals: Long, // token decimals, e.g. 18 for ETH/DAI, 6 for USDC
     val type: String // asset type & network, e.g. `ETH`, `ERC20`, `MATIC_ERC20`
 )
+
+@JsonClass(generateAdapter = true)
+internal data class SavedSessionPayload(val sessionUrl: String)

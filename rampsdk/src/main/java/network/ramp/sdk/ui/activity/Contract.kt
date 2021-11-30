@@ -15,6 +15,8 @@ internal interface Contract {
 
     interface Presenter {
 
+        fun onWidgetPause()
+
         fun handlePostMessage(json: String)
 
         fun buildUrl(config: Config): String
