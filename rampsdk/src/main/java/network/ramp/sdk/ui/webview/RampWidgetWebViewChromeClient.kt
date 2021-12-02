@@ -8,7 +8,7 @@ import android.os.Message
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import network.ramp.sdk.ui.activity.RampWidgetActivity.Companion.ACTION_VIEW_INTENT
+import network.ramp.sdk.ui.activity.RampWidgetFragment.Companion.ACTION_VIEW_INTENT
 
 
 internal class RampWidgetWebViewChromeClient(val context: Context) : WebChromeClient() {

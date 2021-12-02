@@ -1,7 +1,11 @@
 package network.ramp.sdk.facade
 
-import android.app.Activity
-import android.content.Intent
+
+import android.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,8 +14,9 @@ import kotlinx.coroutines.launch
 import network.ramp.sdk.BuildConfig
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
-import network.ramp.sdk.ui.activity.RampWidgetActivity
+import network.ramp.sdk.ui.activity.RampWidgetFragment
 import timber.log.Timber
+
 
 class RampSDK {
 
@@ -25,14 +30,23 @@ class RampSDK {
         handleEvents()
     }
 
-    fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
+    fun startTransaction(
+        activity: AppCompatActivity,
+        config: Config,
+        callback: RampCallback,
+        container: Int
+    ) {
         release()
         this.callback = callback
-        val intent = Intent(activity, RampWidgetActivity::class.java)
-        intent.putExtra(
-            CONFIG_EXTRA, config
-        )
-        activity.startActivity(intent)
+
+        val bundle = bundleOf(CONFIG_EXTRA to config)
+        val fragment = RampWidgetFragment()
+        fragment.arguments = bundle
+        val manager: FragmentManager = activity.supportFragmentManager
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     private fun handleEvents() {

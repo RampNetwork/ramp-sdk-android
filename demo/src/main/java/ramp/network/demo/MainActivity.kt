@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             // 5. Start widget
-            rampSdk.startTransaction(this, config, callback)
+            rampSdk.startTransaction(this, config, callback, binding.fragmentContainerView.id)
 
         }
     }

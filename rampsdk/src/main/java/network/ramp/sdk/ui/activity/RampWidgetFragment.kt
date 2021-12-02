@@ -2,12 +2,16 @@ package network.ramp.sdk.ui.activity
 
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import network.ramp.sdk.databinding.WidgetActivityBinding
+import network.ramp.sdk.databinding.WidgetFragmentBinding
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.RampSdkJsInterface
 import network.ramp.sdk.facade.Config
@@ -17,13 +21,13 @@ import network.ramp.sdk.events.model.*
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
 
-internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
+internal class RampWidgetFragment : Fragment(), Contract.View {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     lateinit var rampPresenter: RampPresenter
 
-    private lateinit var binding: WidgetActivityBinding
+    private lateinit var binding: WidgetFragmentBinding
 
     private lateinit var config: Config
 
@@ -33,23 +37,42 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
         }
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = WidgetActivityBinding.inflate(layoutInflater)
 
-        setContentView(binding.root)
-
-        rampPresenter = RampPresenter(this, this)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = WidgetFragmentBinding.inflate(layoutInflater)
+        val view = binding.root
+        rampPresenter = RampPresenter(this, this.requireContext())
         binding.webView.setupWebView(RampWidgetWebViewClient(binding.progressBar), jsInterface)
 
-        intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
-            config = it
+        requireArguments().get(CONFIG_EXTRA)?.let {
+            config = it as Config
         } ?: returnOnError("Config object cannot be null")
 
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
             binding.webView.loadUrl(rampPresenter.buildUrl(config))
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Do custom work here
+
+                    // if you want onBackPressed() to be called as normal afterwards
+                    if (isEnabled) {
+                        isEnabled = false
+                        requireActivity().onBackPressed()
+                    }
+                }
+            }
+            )
+
+        return view
     }
 
     override fun sendPostMessage(data: String) {
@@ -65,25 +88,25 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     }
 
     override fun close() {
-        this.finish()
+//        this.finish()
     }
 
 
-    override fun onBackPressed() {
-        rampPresenter.onBackPressed {
-            super.onBackPressed()
-        }
-    }
+//    override fun onBackPressed() {
+//        rampPresenter.onBackPressed {
+//            super.onBackPressed()
+//        }
+//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         binding.webView.saveState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        binding.webView.restoreState(savedInstanceState)
-    }
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        binding.webView.restoreState(savedInstanceState)
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -95,7 +118,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     private fun returnOnError(message: String) {
         Timber.e(message)
-        finish()
+//        finish()
     }
 
     companion object {
