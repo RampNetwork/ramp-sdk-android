@@ -48,6 +48,18 @@ captures/
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
+#ArcticFox
+.gradle
+/local.properties
+/.idea/caches
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
