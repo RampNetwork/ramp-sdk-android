@@ -1,7 +1,10 @@
 package network.ramp.sdk.facade
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -11,6 +14,7 @@ import network.ramp.sdk.BuildConfig
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.ui.activity.RampWidgetActivity
+import network.ramp.sdk.ui.fragment.RampWidgetFragment
 import timber.log.Timber
 
 class RampSDK {
@@ -33,6 +37,19 @@ class RampSDK {
             CONFIG_EXTRA, config
         )
         activity.startActivity(intent)
+    }
+
+    fun startTransactionWithFragment(
+        context: Context,
+        containerId: Int,
+        config: Config,
+        callback: RampCallback
+    ) {
+        this.callback = callback
+        (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(containerId, RampWidgetFragment.newInstance(config))
+            .commit()
     }
 
     private fun handleEvents() {

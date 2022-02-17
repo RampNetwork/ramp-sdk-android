@@ -3,6 +3,7 @@ package ramp.network.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampCallback
@@ -54,10 +55,13 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onWidgetClose() {
                     Log.d("MainActivity", "onWidgetClose")
+                    binding.button.visibility = View.VISIBLE
                 }
             }
             // 5. Start widget
-            rampSdk.startTransaction(this, config, callback)
+            rampSdk.startTransactionWithFragment(this, R.id.container, config, callback)
+
+            binding.button.visibility = View.INVISIBLE
 
         }
     }

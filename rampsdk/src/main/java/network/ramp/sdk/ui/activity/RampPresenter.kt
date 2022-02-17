@@ -68,7 +68,7 @@ internal class RampPresenter(
             EventType.KYC_INIT -> {
                 (event as? KycInit)?.payload?.let {
                     Timber.d("kycInit $it ")
-                    runPassbase(it)
+//                    runPassbase(it)
                 }
             }
 
@@ -204,7 +204,7 @@ internal class RampPresenter(
     }
 
     companion object {
-        const val VARIANT = "sdk-mobile"
+        const val VARIANT = "webview-desktop"
         const val DEEP_LINK_SCHEME = "ramp"
         const val LABEL_KEY_TYPE = "type"
         const val PASSBASE_CANCELLED_BY_USER = "CANCELLED_BY_USER"

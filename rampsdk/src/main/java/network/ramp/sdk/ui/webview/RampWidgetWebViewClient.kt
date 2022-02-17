@@ -5,6 +5,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import timber.log.Timber
 
 internal class RampWidgetWebViewClient(private val progressBar: ProgressBar) : WebViewClient() {
 
@@ -15,5 +16,15 @@ internal class RampWidgetWebViewClient(private val progressBar: ProgressBar) : W
         if (url.contains("payment-success.html") or url.contains("payment-failure.html")) {
             view.clearHistory()
         }
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        Timber.d("shouldOverrideUrlLoading request ${request?.url}")
+        return super.shouldOverrideUrlLoading(view, request)
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        Timber.d("shouldOverrideUrlLoading url $url")
+        return super.shouldOverrideUrlLoading(view, url)
     }
 }
