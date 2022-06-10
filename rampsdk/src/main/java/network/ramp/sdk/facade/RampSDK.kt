@@ -26,6 +26,7 @@ class RampSDK {
     }
 
     fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
+        Timber.d("RAMP SDK version - test-wild-card")
         release()
         this.callback = callback
         val intent = Intent(activity, RampWidgetActivity::class.java)
