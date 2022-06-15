@@ -106,6 +106,9 @@ internal class RampPresenter(
                 concatenateIfNotBlank("&defaultAsset=", config.defaultAsset) +
                 concatenateIfNotBlank("&webhookStatusUrl=", config.webhookStatusUrl) +
                 concatenateIfNotBlank("&hostApiKey=", config.hostApiKey) +
+                concatenateIfNotBlank("&defaultFlow=", config.defaultFlow.name) +
+                concatenateIfNotBlank("&offrampWebhookV3Url=", config.offrampWebhookV3Url) +
+                concatenateIfNotBlank("&enabledFlows=", config.enabledFlows.joinToString(separator = ",") { it.name }) +
                 "&variant=$VARIANT" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
     }

@@ -94,6 +94,12 @@ data class Config(
      * An optional string parameter that allows our system to properly recognize and count purchases made through your API integration.
      * Example: "the API key you received"
      */
-    var hostApiKey: String = ""
+    var hostApiKey: String = "",
 
-) : Parcelable
+    var defaultFlow: Flow = Flow.ONRAMP,
+
+    var enabledFlows: List<Flow> = listOf(Flow.ONRAMP),
+
+    var offrampWebhookV3Url: String = ""
+
+    ) : Parcelable

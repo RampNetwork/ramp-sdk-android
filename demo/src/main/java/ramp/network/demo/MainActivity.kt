@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
+import network.ramp.sdk.facade.Flow
 import network.ramp.sdk.facade.RampCallback
 import network.ramp.sdk.facade.RampSDK
 import ramp.network.demo.databinding.ActivityMainBinding
@@ -36,7 +37,9 @@ class MainActivity : AppCompatActivity() {
                 swapAsset = "ETH",
                 fiatCurrency = "USD",
                 fiatValue = "10",
-                selectedCountryCode = "US"
+                selectedCountryCode = "US",
+                defaultFlow = Flow.OFFRAMP,
+                enabledFlows = listOf(Flow.OFFRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {

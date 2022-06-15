@@ -14,6 +14,7 @@ import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
 import timber.log.Timber
 import network.ramp.sdk.events.model.*
+import network.ramp.sdk.facade.RampSDK.Companion.URL_EXTRA
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
 
@@ -26,6 +27,8 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     private lateinit var binding: WidgetActivityBinding
 
     private lateinit var config: Config
+
+    private var url: String? = null
 
     private val jsInterface = RampSdkJsInterface(
         onPostMessage = {
@@ -46,9 +49,13 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             config = it
         } ?: returnOnError("Config object cannot be null")
 
+        intent.extras?.getString(URL_EXTRA)?.let {
+            url = it
+        }
+
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
-            binding.webView.loadUrl(rampPresenter.buildUrl(config))
+            binding.webView.loadUrl(url ?: rampPresenter.buildUrl(config))
         }
     }
 

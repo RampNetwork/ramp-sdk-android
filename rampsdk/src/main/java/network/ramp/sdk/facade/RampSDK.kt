@@ -25,7 +25,7 @@ class RampSDK {
         handleEvents()
     }
 
-    fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
+    fun startTransaction(activity: Activity, config: Config, callback: RampCallback, url: String? = null) {
         Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
         release()
         this.callback = callback
@@ -33,6 +33,7 @@ class RampSDK {
         intent.putExtra(
             CONFIG_EXTRA, config
         )
+        intent.putExtra(URL_EXTRA, url)
         activity.startActivity(intent)
     }
 
@@ -72,5 +73,6 @@ class RampSDK {
 
     companion object {
         internal const val CONFIG_EXTRA = "config"
+        internal const val URL_EXTRA = "url"
     }
 }
