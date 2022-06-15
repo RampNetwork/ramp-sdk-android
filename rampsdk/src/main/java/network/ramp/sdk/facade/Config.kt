@@ -98,7 +98,7 @@ data class Config(
 
     var defaultFlow: Flow = Flow.ONRAMP,
 
-    var enabledFlows: List<Flow> = listOf(Flow.ONRAMP),
+    var enabledFlows: Set<Flow> = setOf(Flow.ONRAMP),
 
     var offrampWebhookV3Url: String = ""
 

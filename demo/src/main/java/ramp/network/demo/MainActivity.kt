@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 fiatValue = "10",
                 selectedCountryCode = "US",
                 defaultFlow = Flow.OFFRAMP,
-                enabledFlows = listOf(Flow.OFFRAMP)
+                enabledFlows = setOf(Flow.OFFRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {
