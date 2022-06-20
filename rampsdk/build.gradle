@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 8
-        versionName "1.3.7-offramp-v1"
+        versionName "1.3.7-offramp-v2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -79,7 +79,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.RampNetwork'
                 artifactId = 'ramp-sdk-android'
-                version = '1.3.6'
+                version = '1.3.7-offramp-v2'
             }
         }
     }

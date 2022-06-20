@@ -45,6 +45,18 @@ internal data class KycSubmittedPayload(
 @JsonClass(generateAdapter = true)
 internal data class KycErrorPayload(var verificationId: Int = 0)
 
+@JsonClass(generateAdapter = true)
+internal data class SendCryptoPayload(
+    var assetSymbol: String = "",
+    var amount: String = "",
+    var address: String = ""
+)
+
+@JsonClass(generateAdapter = true)
+internal data class SendCryptoResultPayload(
+    var txHash: String? = null,
+    var error: String? = null
+)
 
 @JsonClass(generateAdapter = true)
 data class PurchaseCreatedPayload(

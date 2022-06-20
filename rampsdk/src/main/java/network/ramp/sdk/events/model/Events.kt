@@ -40,6 +40,12 @@ internal data class KycSubmitted(var payload: KycSubmittedPayload) : Event(Event
 @JsonClass(generateAdapter = true)
 internal data class KycError(var payload: KycErrorPayload) : Event(EventType.KYC_ERROR)
 
+@JsonClass(generateAdapter = true)
+internal data class SendCrypto(var payload: SendCryptoPayload): Event(EventType.SEND_CRYPTO)
+
+@JsonClass(generateAdapter = true)
+internal data class SendCryptoResult(var payload: SendCryptoResultPayload): Event(EventType.SEND_CRYPTO_RESULT)
+
 @JsonClass(generateAdapter = false)
 enum class EventType {
     WIDGET_CLOSE,
@@ -53,6 +59,8 @@ enum class EventType {
     KYC_FINISHED,
     KYC_ABORTED,
     KYC_SUBMITTED,
-    KYC_ERROR
+    KYC_ERROR,
+    SEND_CRYPTO,
+    SEND_CRYPTO_RESULT
 }
 

@@ -9,6 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
@@ -38,11 +39,31 @@ internal class RampPresenter(
                 .withSubtype(KycFinished::class.java, EventType.KYC_FINISHED.name)
                 .withSubtype(KycAborted::class.java, EventType.KYC_ABORTED.name)
                 .withSubtype(KycSubmitted::class.java, EventType.KYC_SUBMITTED.name)
+                .withSubtype(KycSubmitted::class.java, EventType.SEND_CRYPTO.name)
+                .withSubtype(KycSubmitted::class.java, EventType.SEND_CRYPTO_RESULT.name)
                 .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
         )
         .add(KotlinJsonAdapterFactory())
         .build()
 
+
+    init {
+        handleEventsFromIntegrator()
+    }
+
+    private fun handleEventsFromIntegrator() {
+        scope.launch {
+            EventBus.events.collectLatest {
+                when (it.type) {
+                    EventType.SEND_CRYPTO_RESULT -> {
+                        (it as? SendCryptoResult)?.payload?.let { payload ->
+                            postMessage(SendCryptoResult(payload))
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override fun handlePostMessage(json: String) {
         val event = moshi
@@ -85,6 +106,15 @@ internal class RampPresenter(
                     }
                 }
             }
+
+            EventType.SEND_CRYPTO -> {
+                (event as? SendCrypto)?.payload?.let {
+                    scope.launch {
+                        EventBus.invokeEvent(SendCrypto(it))
+                    }
+                }
+            }
+
             EventType.WIDGET_CONFIG_DONE -> {
                 configDone = true
             }
@@ -108,7 +138,13 @@ internal class RampPresenter(
                 concatenateIfNotBlank("&hostApiKey=", config.hostApiKey) +
                 concatenateIfNotBlank("&defaultFlow=", config.defaultFlow.name) +
                 concatenateIfNotBlank("&offrampWebhookV3Url=", config.offrampWebhookV3Url) +
-                concatenateIfNotBlank("&enabledFlows=", config.enabledFlows.joinToString(separator = ",") { it.name }) +
+                concatenateIfNotBlank(
+                    "&enabledFlows=",
+                    config.enabledFlows.joinToString(separator = ",") { it.name }) +
+                concatenateIfNotBlank(
+                    "&useSendCryptoCallback=",
+                    config.useSendCryptoCallback.toString()
+                ) +
                 "&variant=$VARIANT" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
     }

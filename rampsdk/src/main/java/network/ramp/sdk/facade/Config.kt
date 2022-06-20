@@ -100,6 +100,8 @@ data class Config(
 
     var enabledFlows: Set<Flow> = setOf(Flow.ONRAMP),
 
-    var offrampWebhookV3Url: String = ""
+    var offrampWebhookV3Url: String = "",
 
-    ) : Parcelable
+    var useSendCryptoCallback: Boolean = false
+
+) : Parcelable

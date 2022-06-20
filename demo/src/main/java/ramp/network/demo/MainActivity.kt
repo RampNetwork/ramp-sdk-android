@@ -58,10 +58,20 @@ class MainActivity : AppCompatActivity() {
                 override fun onWidgetClose() {
                     Log.d("MainActivity", "onWidgetClose")
                 }
+
+                override fun offrampSendCrypto(
+                    assetSymbol: String,
+                    amount: String,
+                    address: String
+                ) {
+                    Log.d(
+                        "MainActivity",
+                        "offrampSendCrypto  assetSymbol: $assetSymbol amount: $amount address: $address"
+                    )
+                }
             }
             // 5. Start widget
             rampSdk.startTransaction(this, config, callback)
-
         }
     }
 }

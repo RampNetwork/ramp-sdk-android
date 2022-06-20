@@ -9,4 +9,10 @@ interface RampCallback {
     fun onPurchaseCreated(purchase: Purchase, purchaseViewToken: String, apiUrl: String)
 
     fun onWidgetClose()
+
+    fun offrampSendCrypto(
+        assetSymbol: String,
+        amount: String,
+        address: String
+    )
 }

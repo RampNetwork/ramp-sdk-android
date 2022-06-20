@@ -25,7 +25,12 @@ class RampSDK {
         handleEvents()
     }
 
-    fun startTransaction(activity: Activity, config: Config, callback: RampCallback, url: String? = null) {
+    fun startTransaction(
+        activity: Activity,
+        config: Config,
+        callback: RampCallback,
+        url: String? = null
+    ) {
         Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
         release()
         this.callback = callback
@@ -35,6 +40,12 @@ class RampSDK {
         )
         intent.putExtra(URL_EXTRA, url)
         activity.startActivity(intent)
+    }
+
+    fun onOffRampCryptoSent(txHash: String? = null, error: String? = null) {
+        scope.launch {
+            EventBus.invokeEvent(SendCryptoResult(SendCryptoResultPayload(txHash, error)))
+        }
     }
 
     private fun handleEvents() {
@@ -54,6 +65,15 @@ class RampSDK {
                     }
                     EventType.PURCHASE_FAILED -> {
                         callback?.onPurchaseFailed()
+                    }
+
+                    EventType.SEND_CRYPTO -> {
+                        val payload = (it as SendCrypto).payload
+                        callback?.offrampSendCrypto(
+                            assetSymbol = payload.assetSymbol,
+                            amount = payload.amount,
+                            address = payload.assetSymbol
+                        )
                     }
                     else -> {
                         Timber.w("Unhandled Event")
