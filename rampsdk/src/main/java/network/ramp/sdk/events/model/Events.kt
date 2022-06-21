@@ -46,6 +46,9 @@ internal data class SendCrypto(var payload: SendCryptoPayload): Event(EventType.
 @JsonClass(generateAdapter = true)
 internal data class SendCryptoResult(var payload: SendCryptoResultPayload): Event(EventType.SEND_CRYPTO_RESULT)
 
+@JsonClass(generateAdapter = true)
+internal data class OffRampPurchaseCreated(var payload: Any): Event(EventType.OFFRAMP_PURCHASE_CREATED)
+
 @JsonClass(generateAdapter = false)
 enum class EventType {
     WIDGET_CLOSE,
@@ -61,6 +64,8 @@ enum class EventType {
     KYC_SUBMITTED,
     KYC_ERROR,
     SEND_CRYPTO,
-    SEND_CRYPTO_RESULT
+    SEND_CRYPTO_RESULT,
+    OFFRAMP_PURCHASE_CREATED
+
 }
 
