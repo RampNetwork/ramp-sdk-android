@@ -52,7 +52,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
         intent.extras?.getString(URL_EXTRA)?.let {
             url = it
         }
-
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
             binding.webView.loadUrl(url ?: rampPresenter.buildUrl(config))

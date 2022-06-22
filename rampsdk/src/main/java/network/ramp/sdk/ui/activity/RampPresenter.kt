@@ -41,7 +41,10 @@ internal class RampPresenter(
                 .withSubtype(KycSubmitted::class.java, EventType.KYC_SUBMITTED.name)
                 .withSubtype(SendCrypto::class.java, EventType.SEND_CRYPTO.name)
                 .withSubtype(SendCryptoResult::class.java, EventType.SEND_CRYPTO_RESULT.name)
-                .withSubtype(OffRampPurchaseCreated::class.java, EventType.OFFRAMP_PURCHASE_CREATED.name)
+                .withSubtype(
+                    OffRampPurchaseCreated::class.java,
+                    EventType.OFFRAMP_PURCHASE_CREATED.name
+                )
                 .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
         )
         .add(KotlinJsonAdapterFactory())
@@ -58,6 +61,7 @@ internal class RampPresenter(
                 when (it.type) {
                     EventType.SEND_CRYPTO_RESULT -> {
                         (it as? SendCryptoResult)?.payload?.let { payload ->
+                            Timber.d("Integrator is sending SEND_CRYPTO_RESULT Event $payload")
                             postMessage(SendCryptoResult(payload))
                         }
                     }
@@ -104,6 +108,14 @@ internal class RampPresenter(
                 (event as? PurchasedCreated)?.payload?.let {
                     scope.launch {
                         EventBus.invokeEvent(PurchasedCreated(it))
+                    }
+                }
+            }
+
+            EventType.OFFRAMP_PURCHASE_CREATED -> {
+                (event as? OffRampPurchaseCreated)?.payload?.let {
+                    scope.launch {
+                        EventBus.invokeEvent(OffRampPurchaseCreated(it))
                     }
                 }
             }

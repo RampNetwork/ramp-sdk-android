@@ -47,7 +47,7 @@ internal data class SendCrypto(var payload: SendCryptoPayload): Event(EventType.
 internal data class SendCryptoResult(var payload: SendCryptoResultPayload): Event(EventType.SEND_CRYPTO_RESULT)
 
 @JsonClass(generateAdapter = true)
-internal data class OffRampPurchaseCreated(var payload: Any): Event(EventType.OFFRAMP_PURCHASE_CREATED)
+internal data class OffRampPurchaseCreated(var payload: OffRampPurchaseCreatedPayload): Event(EventType.OFFRAMP_PURCHASE_CREATED)
 
 @JsonClass(generateAdapter = false)
 enum class EventType {

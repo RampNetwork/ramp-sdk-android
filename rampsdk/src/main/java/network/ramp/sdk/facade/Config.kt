@@ -102,6 +102,6 @@ data class Config(
 
     var offrampWebhookV3Url: String = "",
 
-    var useSendCryptoCallback: Boolean = false
+    var useSendCryptoCallback: Boolean? = null
 
 ) : Parcelable

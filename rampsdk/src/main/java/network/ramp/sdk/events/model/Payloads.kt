@@ -66,6 +66,14 @@ data class PurchaseCreatedPayload(
 )
 
 @JsonClass(generateAdapter = true)
+data class OffRampPurchaseCreatedPayload(
+    val purchase: OffRampPurchase,
+    val purchaseViewToken: String,
+    val apiUrl: String
+)
+
+
+@JsonClass(generateAdapter = true)
 data class Purchase(
     val id: String,
     val endTime: String, // purchase validity time, ISO date-time string
@@ -91,6 +99,26 @@ data class Purchase(
     val status: String, // purchase status
     val paymentMethodType: String, // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
     val finalTxHash: String? = null // hash of the crypto transfer blockchain transaction, filled once available
+)
+
+@JsonClass(generateAdapter = true)
+data class OffRampPurchase(
+    val id: String,
+    val createdAt: String, // ISO date-time string
+    val crypto: Crypto,
+    val fiat: Fiat
+)
+
+@JsonClass(generateAdapter = true)
+data class Crypto(
+    val amount: String,
+    val assetInfo: Asset, // description of the purchased asset (address, symbol, name, decimals)
+)
+
+@JsonClass(generateAdapter = true)
+data class Fiat(
+    val amount: Double,
+    val currencySymbol: String, // description of the purchased asset (address, symbol, name, decimals)
 )
 
 @JsonClass(generateAdapter = true)
