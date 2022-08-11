@@ -102,6 +102,13 @@ data class Config(
 
     var offrampWebhookV3Url: String = "",
 
-    var useSendCryptoCallback: Boolean? = null
+    var useSendCryptoCallback: Boolean? = null,
 
-) : Parcelable
+    var useSendCryptoCallbackVersion: Int? = SEND_CRYPTO_CALLBACK_VERSION
+
+) : Parcelable{
+
+    companion object{
+        const val SEND_CRYPTO_CALLBACK_VERSION = 1
+    }
+}
