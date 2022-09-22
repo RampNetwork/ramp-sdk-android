@@ -66,9 +66,9 @@ data class PurchaseCreatedPayload(
 )
 
 @JsonClass(generateAdapter = true)
-data class OffRampPurchaseCreatedPayload(
-    val purchase: OffRampPurchase,
-    val purchaseViewToken: String,
+data class OffRampSaleCreatedPayload(
+    val sale: OffRampSale,
+    val saleViewToken: String,
     val apiUrl: String
 )
 
@@ -102,7 +102,7 @@ data class Purchase(
 )
 
 @JsonClass(generateAdapter = true)
-data class OffRampPurchase(
+data class OffRampSale(
     val id: String,
     val createdAt: String, // ISO date-time string
     val crypto: Crypto,

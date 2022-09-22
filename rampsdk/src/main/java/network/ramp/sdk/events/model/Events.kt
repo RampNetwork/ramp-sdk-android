@@ -61,8 +61,8 @@ internal data class SendCryptoResult(
 ) : Event(EventType.SEND_CRYPTO_RESULT)
 
 @JsonClass(generateAdapter = true)
-internal data class OffRampPurchaseCreated(var payload: OffRampPurchaseCreatedPayload) :
-    Event(EventType.OFFRAMP_PURCHASE_CREATED)
+internal data class OffRampSaleCreated(var payload: OffRampSaleCreatedPayload) :
+    Event(EventType.OFFRAMP_SALE_CREATED)
 
 @JsonClass(generateAdapter = false)
 enum class EventType {
@@ -81,6 +81,6 @@ enum class EventType {
     KYC_ERROR,
     SEND_CRYPTO,
     SEND_CRYPTO_RESULT,
-    OFFRAMP_PURCHASE_CREATED
+    OFFRAMP_SALE_CREATED
 }
 
