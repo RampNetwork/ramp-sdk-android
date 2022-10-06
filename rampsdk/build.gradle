@@ -79,7 +79,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.RampNetwork'
                 artifactId = 'ramp-sdk-android'
-                version = '1.3.6'
+                version = '1.3.7'
             }
         }
     }
