@@ -43,7 +43,6 @@ internal class RampPresenter(
         .add(KotlinJsonAdapterFactory())
         .build()
 
-
     override fun handlePostMessage(json: String) {
         val event = moshi
             .adapter(Event::class.java)
