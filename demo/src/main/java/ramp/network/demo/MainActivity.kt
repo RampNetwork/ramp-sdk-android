@@ -3,7 +3,7 @@ package ramp.network.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import network.ramp.sdk.events.model.OffRampPurchase
+import network.ramp.sdk.events.model.OffRampSale
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.Flow
@@ -72,12 +72,12 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-                override fun onOffRampPurchaseCreated(
-                    purchase: OffRampPurchase,
+                override fun onOffRampSaleCreated(
+                    purchase: OffRampSale,
                     purchaseViewToken: String,
                     apiUrl: String
                 ) {
-                    Log.d("MainActivity", "onOffRampPurchaseCreated ${purchase.id} ${purchase.createdAt} crypto: ${purchase.crypto.amount} ${purchase.crypto.assetInfo}")
+                    Log.d("MainActivity", "onOffRampSaleCreated ${purchase.id} ${purchase.createdAt} crypto: ${purchase.crypto.amount} ${purchase.crypto.assetInfo}")
                 }
             }
             // 5. Start widget

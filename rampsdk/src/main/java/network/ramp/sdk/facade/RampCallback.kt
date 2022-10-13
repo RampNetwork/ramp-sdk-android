@@ -1,6 +1,6 @@
 package network.ramp.sdk.facade
 
-import network.ramp.sdk.events.model.OffRampPurchase
+import network.ramp.sdk.events.model.OffRampSale
 import network.ramp.sdk.events.model.Purchase
 
 interface RampCallback {
@@ -9,8 +9,8 @@ interface RampCallback {
 
     fun onPurchaseCreated(purchase: Purchase, purchaseViewToken: String, apiUrl: String)
 
-    fun onOffRampPurchaseCreated(
-        purchase: OffRampPurchase,
+    fun onOffRampSaleCreated(
+        purchase: OffRampSale,
         purchaseViewToken: String,
         apiUrl: String
     )
