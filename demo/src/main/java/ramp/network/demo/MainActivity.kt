@@ -73,11 +73,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onOffRampSaleCreated(
-                    purchase: OffRampSale,
-                    purchaseViewToken: String,
+                    sale: OffRampSale,
+                    saleViewToken: String,
                     apiUrl: String
                 ) {
-                    Log.d("MainActivity", "onOffRampSaleCreated ${purchase.id} ${purchase.createdAt} crypto: ${purchase.crypto.amount} ${purchase.crypto.assetInfo}")
+                    Log.d("MainActivity", "onOffRampSaleCreated ${sale.id} ${sale.createdAt} crypto: ${sale.crypto.amount} ${sale.crypto.assetInfo}")
                 }
             }
             // 5. Start widget

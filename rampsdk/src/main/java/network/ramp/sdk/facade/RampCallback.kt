@@ -10,8 +10,8 @@ interface RampCallback {
     fun onPurchaseCreated(purchase: Purchase, purchaseViewToken: String, apiUrl: String)
 
     fun onOffRampSaleCreated(
-        purchase: OffRampSale,
-        purchaseViewToken: String,
+        sale: OffRampSale,
+        saleViewToken: String,
         apiUrl: String
     )
 

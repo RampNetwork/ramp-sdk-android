@@ -66,6 +66,7 @@ internal class RampPresenter(
                             postMessage(SendCryptoResult(payload))
                         }
                     }
+                    else -> {}
                 }
             }
         }
@@ -160,6 +161,7 @@ internal class RampPresenter(
                     config.useSendCryptoCallback.toString()
                 ) +
                 "&variant=$VARIANT" +
+                "&useSendCryptoCallbackVersion=${config.useSendCryptoCallbackVersion}" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
     }
 
