@@ -36,12 +36,8 @@ class MainActivity : AppCompatActivity() {
                 userAddress = "0x4b7f8e04b82ad7f9e4b4cc9e1f81c5938e1b719f",
                 url = "https://ri-widget-dev-5.firebaseapp.com/",
                 hostApiKey = "fill it with your host api key", //TODO()
-                swapAsset = "ETH",
-                fiatCurrency = "USD",
-                fiatValue = "10",
-                selectedCountryCode = "US",
-                defaultFlow = Flow.OFFRAMP,
-                enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
+                defaultFlow = Flow.ONRAMP,
+                enabledFlows = setOf(Flow.ONRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {

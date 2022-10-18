@@ -53,8 +53,9 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             url = it
         }
         if (savedInstanceState == null) {
-            Timber.d(rampPresenter.buildUrl(config))
-            binding.webView.loadUrl(url ?: rampPresenter.buildUrl(config))
+            val builtConfig = rampPresenter.buildUrl(config)
+            Timber.d(builtConfig)
+            binding.webView.loadUrl(url ?: builtConfig)
         }
     }
 

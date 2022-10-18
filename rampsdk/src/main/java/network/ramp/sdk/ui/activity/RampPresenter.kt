@@ -51,7 +51,6 @@ internal class RampPresenter(
         .add(KotlinJsonAdapterFactory())
         .build()
 
-
     init {
         handleEventsFromIntegrator()
     }
