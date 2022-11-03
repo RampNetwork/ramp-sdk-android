@@ -1,6 +1,7 @@
 package network.ramp.sdk.ui.activity
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -48,9 +49,23 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
-            binding.webView.loadUrl(rampPresenter.buildUrl(config))
+            securityCheck(intent)?.let {
+                binding.webView.loadUrl(it)
+            } ?: close()
         }
     }
+
+    private fun securityCheck(intent: Intent): String? =
+        if (isInternalIntent(intent) && rampPresenter.isUrlSafe(config.url))
+            rampPresenter.buildUrl(config)
+        else {
+            Timber.e("SECURITY ALERT - UNAUTHORIZED CALL")
+            null
+        }
+
+    private fun isInternalIntent(intent: Intent): Boolean =
+        intent.data?.scheme == null
+
 
     override fun sendPostMessage(data: String) {
         val url = "javascript:(function f() { window.postMessage($data, \"*\"); })()"
@@ -100,7 +115,5 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     companion object {
         const val ACTION_VIEW_INTENT = "android.intent.action.VIEW"
-        const val RAMP_PREFIX = "ramp"
-        const val HTTPS_SCHEME = "https"
     }
 }

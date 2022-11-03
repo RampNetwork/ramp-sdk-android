@@ -189,6 +189,8 @@ internal class RampPresenter(
             systemOnBackPressed()
     }
 
+    fun isUrlSafe(url: String): Boolean = listOfSafeUrls.contains(url)
+
     private fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
             .adapter(Event::class.java)
@@ -208,4 +210,10 @@ internal class RampPresenter(
         const val LABEL_KEY_TYPE = "type"
         const val PASSBASE_CANCELLED_BY_USER = "CANCELLED_BY_USER"
     }
+
+    private val listOfSafeUrls = listOf(
+        "https://ri-widget-dev2.firebaseapp.com/",
+        "https://ri-widget-staging.firebaseapp.com/",
+        "https://buy.ramp.network/"
+    )
 }
