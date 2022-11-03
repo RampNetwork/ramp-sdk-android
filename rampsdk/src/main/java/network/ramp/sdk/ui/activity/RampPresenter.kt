@@ -93,7 +93,7 @@ internal class RampPresenter(
 
     override fun buildUrl(config: Config): String {
         return config.url +
-                "?hostAppName=${config.hostAppName}" +
+                "/?hostAppName=${config.hostAppName}" +
                 "&hostLogoUrl=${config.hostLogoUrl}" +
                 concatenateIfNotBlank("&swapAsset=", config.swapAsset) +
                 concatenateIfNotBlank("&swapAmount=", config.swapAmount) +
@@ -189,7 +189,21 @@ internal class RampPresenter(
             systemOnBackPressed()
     }
 
-    fun isUrlSafe(url: String): Boolean = listOfSafeUrls.contains(url)
+    fun isUrlSafe(url: String): Boolean = checkStaticUrls(url) || checkRegexList(url)
+
+
+    private fun checkStaticUrls(url: String): Boolean = listOfSafeUrls.contains(url)
+
+    private fun checkRegexList(url: String): Boolean {
+        var isMatch = false
+        listOfSafeRegex.forEach {
+            val regex = Regex(pattern = it, options = setOf(RegexOption.IGNORE_CASE))
+            if (regex.matches(url))
+                isMatch = true
+        }
+        return isMatch
+    }
+
 
     private fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
@@ -212,8 +226,9 @@ internal class RampPresenter(
     }
 
     private val listOfSafeUrls = listOf(
-        "https://ri-widget-dev2.firebaseapp.com/",
-        "https://ri-widget-staging.firebaseapp.com/",
-        "https://buy.ramp.network/"
+        "https://ri-widget-dev2.firebaseapp.com",
+        "https://ri-widget-staging.firebaseapp.com",
+        "https://buy.ramp.network"
     )
+    private val listOfSafeRegex = listOf("^https://ri-widget-dev-(\\d)*.firebaseapp.com")
 }
