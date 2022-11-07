@@ -1,6 +1,8 @@
 package network.ramp.sdk.events.model
 
+import android.os.Parcelable
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
 internal data class OpenLinkPayload(val linkType: String, val url: String)
@@ -122,6 +124,7 @@ data class Fiat(
 )
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class Asset(
     val address: String? = null, // 0x-prefixed address for ERC-20 tokens, `null` for ETH
     val symbol: String, // asset symbol, for example `ETH`, `DAI`, `USDC`
@@ -129,4 +132,4 @@ data class Asset(
     val decimals: Long, // token decimals, e.g. 18 for ETH/DAI, 6 for USDC
     val type: String, // asset type & network, e.g. `ETH`, `ERC20`, `MATIC_ERC20`
     val chain: String // asset chain, for example `ETH`, `BSC`, `POLKADOT`
-)
+) : Parcelable
