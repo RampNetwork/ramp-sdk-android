@@ -78,11 +78,11 @@ class RampSDK {
 
                     EventType.SEND_CRYPTO -> {
                         val payload = (it as SendCrypto).payload
-                        Timber.d("SEND CRYPTO : ${payload.address} ${payload.amount} ${payload.assetSymbol}")
+                        Timber.d("SEND CRYPTO : ${payload.address} ${payload.amount} ${payload.assetInfo}")
                         callback?.offrampSendCrypto(
-                            assetSymbol = payload.assetSymbol,
+                            assetInfo = payload.assetInfo,
                             amount = payload.amount,
-                            address = payload.assetSymbol
+                            address = payload.address
                         )
                     }
                     else -> {

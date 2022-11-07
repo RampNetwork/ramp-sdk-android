@@ -141,6 +141,7 @@ internal class RampPresenter(
                 "?hostAppName=${config.hostAppName}" +
                 "&hostLogoUrl=${config.hostLogoUrl}" +
                 concatenateIfNotBlank("&swapAsset=", config.swapAsset) +
+                concatenateIfNotBlank("&offrampAsset=", config.offrampAsset) +
                 concatenateIfNotBlank("&swapAmount=", config.swapAmount) +
                 concatenateIfNotBlank("&fiatCurrency=", config.fiatCurrency) +
                 concatenateIfNotBlank("&fiatValue=", config.fiatValue) +

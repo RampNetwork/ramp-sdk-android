@@ -3,6 +3,7 @@ package ramp.network.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import network.ramp.sdk.events.model.Asset
 import network.ramp.sdk.events.model.OffRampSale
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 url = "https://ri-widget-dev-5.firebaseapp.com/",
                 hostApiKey = "fill it with your host api key", //TODO()
                 defaultFlow = Flow.ONRAMP,
-                enabledFlows = setOf(Flow.ONRAMP)
+                enabledFlows = setOf(Flow.ONRAMP, Flow.OFFRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {
@@ -58,13 +59,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun offrampSendCrypto(
-                    assetSymbol: String,
+                    assetInfo: Asset,
                     amount: String,
                     address: String
                 ) {
                     Log.d(
                         "MainActivity",
-                        "offrampSendCrypto  assetSymbol: $assetSymbol amount: $amount address: $address"
+                        "offrampSendCrypto  assetInfo: $assetInfo amount: $amount address: $address"
                     )
                 }
 
