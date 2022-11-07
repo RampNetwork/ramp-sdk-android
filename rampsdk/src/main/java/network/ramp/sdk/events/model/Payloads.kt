@@ -47,7 +47,7 @@ internal data class KycErrorPayload(var verificationId: Int = 0)
 
 @JsonClass(generateAdapter = true)
 internal data class SendCryptoPayload(
-    var assetInfo: Asset? = null,
+    var assetInfo: Asset,
     var amount: String = "",
     var address: String = ""
 )
