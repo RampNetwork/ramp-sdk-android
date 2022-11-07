@@ -47,7 +47,7 @@ internal data class KycErrorPayload(var verificationId: Int = 0)
 
 @JsonClass(generateAdapter = true)
 internal data class SendCryptoPayload(
-    var assetInfo: Asset = "",
+    var assetInfo: Asset? = null,
     var amount: String = "",
     var address: String = ""
 )
@@ -127,6 +127,6 @@ data class Asset(
     val symbol: String, // asset symbol, for example `ETH`, `DAI`, `USDC`
     val name: String,
     val decimals: Long, // token decimals, e.g. 18 for ETH/DAI, 6 for USDC
-    val type: String // asset type & network, e.g. `ETH`, `ERC20`, `MATIC_ERC20`
+    val type: String, // asset type & network, e.g. `ETH`, `ERC20`, `MATIC_ERC20`
     val chain: String // asset chain, for example `ETH`, `BSC`, `POLKADOT`
 )

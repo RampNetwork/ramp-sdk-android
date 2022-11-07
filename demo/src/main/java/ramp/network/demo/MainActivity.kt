@@ -3,6 +3,7 @@ package ramp.network.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import network.ramp.sdk.events.model.Asset
 import network.ramp.sdk.events.model.OffRampSale
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
@@ -35,9 +36,8 @@ class MainActivity : AppCompatActivity() {
                 hostAppName = "My App",
                 userAddress = "0x4b7f8e04b82ad7f9e4b4cc9e1f81c5938e1b719f",
                 url = "https://ri-widget-dev-5.firebaseapp.com/",
-                hostApiKey = "fill it with your host api key", //TODO()
                 defaultFlow = Flow.ONRAMP,
-                enabledFlows = setOf(Flow.ONRAMP)
+                enabledFlows = setOf(Flow.ONRAMP, Flow.OFFRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {
