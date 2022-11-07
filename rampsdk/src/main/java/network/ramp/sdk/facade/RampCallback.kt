@@ -2,6 +2,7 @@ package network.ramp.sdk.facade
 
 import network.ramp.sdk.events.model.OffRampSale
 import network.ramp.sdk.events.model.Purchase
+import network.ramp.sdk.events.model.Asset
 
 interface RampCallback {
 
@@ -18,7 +19,7 @@ interface RampCallback {
     fun onWidgetClose()
 
     fun offrampSendCrypto(
-        assetSymbol: String,
+        assetInfo: Asset,
         amount: String,
         address: String
     )

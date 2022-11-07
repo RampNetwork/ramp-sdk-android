@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun offrampSendCrypto(
-                    assetSymbol: String,
+                    assetInfo: Asset,
                     amount: String,
                     address: String
                 ) {
                     Log.d(
                         "MainActivity",
-                        "offrampSendCrypto  assetSymbol: $assetSymbol amount: $amount address: $address"
+                        "offrampSendCrypto  assetInfo: $assetInfo amount: $amount address: $address"
                     )
                 }
 

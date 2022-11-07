@@ -36,6 +36,11 @@ data class Config(
      */
     var swapAsset: String = "",
 
+    /***
+     * An optional string parameter, works exactly the same as swapAsset but applies only for off-ramp.
+     */
+    var offrampAsset: String = "",
+
     /**
      * An optional int parameter that pre-sets the amount of crypto your user will buy.
      * If left blank, the user will choose the amount on their own.
