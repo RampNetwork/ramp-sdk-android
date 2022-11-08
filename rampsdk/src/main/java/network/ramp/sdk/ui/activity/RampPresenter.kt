@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.facade.Config
+import network.ramp.sdk.utils.UrlSafeChecker
 import timber.log.Timber
 
 internal class RampPresenter(
@@ -189,23 +190,9 @@ internal class RampPresenter(
             systemOnBackPressed()
     }
 
-    fun isUrlSafe(url: String): Boolean = checkStaticUrls(url) || checkRegexList(url)
+    fun isUrlSafe(url: String): Boolean = UrlSafeChecker.isUrlSafe(url)
 
-
-    private fun checkStaticUrls(url: String): Boolean = listOfSafeUrls.contains(url)
-
-    private fun checkRegexList(url: String): Boolean {
-        var isMatch = false
-        listOfSafeRegex.forEach {
-            val regex = Regex(pattern = it, options = setOf(RegexOption.IGNORE_CASE))
-            if (regex.matches(url))
-                isMatch = true
-        }
-        return isMatch
-    }
-
-
-    private fun <T : Event> postMessage(event: T) {
+    fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
             .adapter(Event::class.java)
             .toJson(event)
@@ -224,11 +211,4 @@ internal class RampPresenter(
         const val LABEL_KEY_TYPE = "type"
         const val PASSBASE_CANCELLED_BY_USER = "CANCELLED_BY_USER"
     }
-
-    private val listOfSafeUrls = listOf(
-        "https://ri-widget-dev2.firebaseapp.com",
-        "https://ri-widget-staging.firebaseapp.com",
-        "https://buy.ramp.network"
-    )
-    private val listOfSafeRegex = listOf("^https://ri-widget-dev-(\\d)*.firebaseapp.com")
 }
