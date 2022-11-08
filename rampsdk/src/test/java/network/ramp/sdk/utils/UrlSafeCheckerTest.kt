@@ -26,20 +26,23 @@ internal class UrlSafeCheckerTest {
     @Test
     fun `isUrlSafe should return false fore unsafe urls`() {
 
-        val safeUrl1 = "https://ri-widget-devs2.firebaseapp.com"
-        val safeUrl2 = "ri-widget-staging.firebaseapp.com"
-        val safeUrl3 = "https://ngrok.io/buy.ramp.network"
-        val safeUrl4 = "https://ri-widget-dev-5.firebaseapp.com/sadasd"
-        val safeUrl5 = "https://ri-widget-dev.com/?https://ri-widget-devs2.firebaseapp.com"
-        val safeUrl6 = "https://ri-widget-dev-s.firebaseapp.com"
+        val unsafeUrl1 = "https://ri-widget-devs2.firebaseapp.com"
+        val unsafeUrl2 = "ri-widget-staging.firebaseapp.com"
+        val unsafeUrl3 = "https://ngrok.io/buy.ramp.network"
+        val unsafeUrl4 = "https://ri-widget-dev-5.firebaseapp.com/sadasd"
+        val unsafeUrl5 = "https://ri-widget-dev.com/?https://ri-widget-devs2.firebaseapp.com"
+        val unsafeUrl6 = "https://ri-widget-dev-s.firebaseapp.com"
+        val unsafeUrl7 = "https://ri-widget-dev-10.firebaseapp.comsd"
+
 
         Assertions.assertAll(
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl1)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl2)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl3)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl4)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl5)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(safeUrl6)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl1)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl2)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl3)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl4)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl5)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl6)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl7)) }
         )
     }
 }

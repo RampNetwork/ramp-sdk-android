@@ -7,7 +7,7 @@ object UrlSafeChecker {
         "https://ri-widget-staging.firebaseapp.com",
         "https://buy.ramp.network"
     )
-    private val listOfSafeRegex = listOf("^https://ri-widget-dev-(\d+)\.firebaseapp\.com$")
+    private val listOfSafeRegex = listOf("^https://ri-widget-dev-(\\d)*\\.firebaseapp\\.com$")
 
     fun isUrlSafe(url: String) = checkStaticUrls(url) || checkRegexList(url)
 
