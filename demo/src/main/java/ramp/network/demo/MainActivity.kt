@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import network.ramp.sdk.events.model.Asset
-import network.ramp.sdk.events.model.OffRampSale
+import network.ramp.sdk.events.model.OfframpSale
 import network.ramp.sdk.events.model.Purchase
 import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.Flow
@@ -69,12 +69,12 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-                override fun onOffRampSaleCreated(
-                    sale: OffRampSale,
+                override fun onOfframpSaleCreated(
+                    sale: OfframpSale,
                     saleViewToken: String,
                     apiUrl: String
                 ) {
-                    Log.d("MainActivity", "onOffRampSaleCreated ${sale.id} ${sale.createdAt} crypto: ${sale.crypto.amount} ${sale.crypto.assetInfo}")
+                    Log.d("MainActivity", "onOfframpSaleCreated ${sale.id} ${sale.createdAt} crypto: ${sale.crypto.amount} ${sale.crypto.assetInfo}")
                 }
             }
             // 5. Start widget

@@ -43,7 +43,7 @@ internal class RampPresenter(
                 .withSubtype(SendCrypto::class.java, EventType.SEND_CRYPTO.name)
                 .withSubtype(SendCryptoResult::class.java, EventType.SEND_CRYPTO_RESULT.name)
                 .withSubtype(
-                    OffRampSaleCreated::class.java,
+                    OfframpSaleCreated::class.java,
                     EventType.OFFRAMP_SALE_CREATED.name
                 )
                 .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
@@ -114,9 +114,9 @@ internal class RampPresenter(
             }
 
             EventType.OFFRAMP_SALE_CREATED -> {
-                (event as? OffRampSaleCreated)?.payload?.let {
+                (event as? OfframpSaleCreated)?.payload?.let {
                     scope.launch {
-                        EventBus.invokeEvent(OffRampSaleCreated(it))
+                        EventBus.invokeEvent(OfframpSaleCreated(it))
                     }
                 }
             }

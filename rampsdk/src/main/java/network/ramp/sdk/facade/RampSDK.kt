@@ -42,7 +42,7 @@ class RampSDK {
         activity.startActivity(intent)
     }
 
-    fun onOffRampCryptoSent(txHash: String? = null, error: String? = null) {
+    fun onOfframpCryptoSent(txHash: String? = null, error: String? = null) {
         scope.launch {
             EventBus.invokeEvent(SendCryptoResult(SendCryptoResultPayload(txHash, error)))
         }
@@ -68,8 +68,8 @@ class RampSDK {
                     }
 
                     EventType.OFFRAMP_SALE_CREATED -> {
-                        val payload = (it as OffRampSaleCreated).payload
-                        callback?.onOffRampSaleCreated(
+                        val payload = (it as OfframpSaleCreated).payload
+                        callback?.onOfframpSaleCreated(
                             payload.sale,
                             payload.saleViewToken,
                             payload.apiUrl
