@@ -12,7 +12,8 @@ internal class UrlSafeCheckerTest {
         val safeUrl2 = "https://ri-widget-staging.firebaseapp.com"
         val safeUrl3 = "https://buy.ramp.network"
         val safeUrl4 = "https://ri-widget-dev-5.firebaseapp.com"
-        val safeUrl5 = "https://ri-widget-dev-10.firebaseapp.com"
+        val safeUrl5 = "https://ri-widget-dev-42.firebaseapp.com"
+
 
         Assertions.assertAll(
             { Assertions.assertTrue(UrlSafeChecker.isUrlSafe(safeUrl1)) },
@@ -33,6 +34,7 @@ internal class UrlSafeCheckerTest {
         val unsafeUrl5 = "https://ri-widget-dev.com/?https://ri-widget-devs2.firebaseapp.com"
         val unsafeUrl6 = "https://ri-widget-dev-s.firebaseapp.com"
         val unsafeUrl7 = "https://ri-widget-dev-10.firebaseapp.comsd"
+        val unsafeUrl8 = "https://ri-widget-dev-.firebaseapp.com"
 
 
         Assertions.assertAll(
@@ -42,7 +44,8 @@ internal class UrlSafeCheckerTest {
             { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl4)) },
             { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl5)) },
             { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl6)) },
-            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl7)) }
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl7)) },
+            { Assertions.assertFalse(UrlSafeChecker.isUrlSafe(unsafeUrl8)) }
         )
     }
 }
