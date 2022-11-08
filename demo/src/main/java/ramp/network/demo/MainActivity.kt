@@ -34,11 +34,9 @@ class MainActivity : AppCompatActivity() {
             val config = Config(
                 hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",
                 hostAppName = "My App",
-                userAddress = "0x4b7f8e04b82ad7f9e4b4cc9e1f81c5938e1b719f",
-                url = "https://ri-widget-dev-5.firebaseapp.com/",
-                hostApiKey = "fill it with your host api key", //TODO()
-                defaultFlow = Flow.ONRAMP,
-                enabledFlows = setOf(Flow.ONRAMP, Flow.OFFRAMP)
+                url = "https://ri-widget-dev2.firebaseapp.com",
+                hostApiKey = "3qncr4yvxfpro6endeaeu6npkh8qc23e9uadtazq",
+                enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {
