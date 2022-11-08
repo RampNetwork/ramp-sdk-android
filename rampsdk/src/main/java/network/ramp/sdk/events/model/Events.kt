@@ -61,7 +61,7 @@ internal data class SendCryptoResult(
 ) : Event(EventType.SEND_CRYPTO_RESULT)
 
 @JsonClass(generateAdapter = true)
-internal data class OffRampSaleCreated(var payload: OffRampSaleCreatedPayload) :
+internal data class OfframpSaleCreated(var payload: OfframpSaleCreatedPayload) :
     Event(EventType.OFFRAMP_SALE_CREATED)
 
 @JsonClass(generateAdapter = false)
