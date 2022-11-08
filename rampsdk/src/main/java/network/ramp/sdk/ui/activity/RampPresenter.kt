@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.facade.Config
+import network.ramp.sdk.utils.UrlSafeChecker
 import timber.log.Timber
 
 internal class RampPresenter(
@@ -93,7 +94,7 @@ internal class RampPresenter(
 
     override fun buildUrl(config: Config): String {
         return config.url +
-                "?hostAppName=${config.hostAppName}" +
+                "/?hostAppName=${config.hostAppName}" +
                 "&hostLogoUrl=${config.hostLogoUrl}" +
                 concatenateIfNotBlank("&swapAsset=", config.swapAsset) +
                 concatenateIfNotBlank("&swapAmount=", config.swapAmount) +
@@ -189,7 +190,9 @@ internal class RampPresenter(
             systemOnBackPressed()
     }
 
-    private fun <T : Event> postMessage(event: T) {
+    fun isUrlSafe(url: String): Boolean = UrlSafeChecker.isUrlSafe(url)
+
+    fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
             .adapter(Event::class.java)
             .toJson(event)
