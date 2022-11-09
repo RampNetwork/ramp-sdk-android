@@ -158,11 +158,10 @@ internal class RampPresenter(
                     "&enabledFlows=",
                     config.enabledFlows.joinToString(separator = ",") { it.name }) +
                 concatenateIfNotBlank(
-                    "&useSendCryptoCallback=",
-                    config.useSendCryptoCallback.toString()
+                    "&useSendCryptoCallbackVersion=",
+                    if (config.useSendCryptoCallback == true) Config.SEND_CRYPTO_CALLBACK_VERSION.toString() else ""
                 ) +
                 "&variant=$VARIANT" +
-                "&useSendCryptoCallbackVersion=${config.useSendCryptoCallbackVersion}" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
     }
 
