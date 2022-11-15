@@ -9,6 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
@@ -33,16 +34,43 @@ internal class RampPresenter(
                 .withSubtype(PurchasedFailed::class.java, EventType.PURCHASE_FAILED.name)
                 .withSubtype(PurchasedCreated::class.java, EventType.PURCHASE_CREATED.name)
                 .withSubtype(WidgetConfigDone::class.java, EventType.WIDGET_CONFIG_DONE.name)
+                .withSubtype(WidgetConfigFailed::class.java, EventType.WIDGET_CONFIG_FAILED.name)
                 .withSubtype(BackButtonPressed::class.java, EventType.BACK_BUTTON_PRESSED.name)
                 .withSubtype(KycInit::class.java, EventType.KYC_INIT.name)
                 .withSubtype(KycStarted::class.java, EventType.KYC_STARTED.name)
                 .withSubtype(KycFinished::class.java, EventType.KYC_FINISHED.name)
                 .withSubtype(KycAborted::class.java, EventType.KYC_ABORTED.name)
                 .withSubtype(KycSubmitted::class.java, EventType.KYC_SUBMITTED.name)
+                .withSubtype(SendCrypto::class.java, EventType.SEND_CRYPTO.name)
+                .withSubtype(SendCryptoResult::class.java, EventType.SEND_CRYPTO_RESULT.name)
+                .withSubtype(
+                    OfframpSaleCreated::class.java,
+                    EventType.OFFRAMP_SALE_CREATED.name
+                )
                 .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
         )
         .add(KotlinJsonAdapterFactory())
         .build()
+
+    init {
+        handleEventsFromIntegrator()
+    }
+
+    private fun handleEventsFromIntegrator() {
+        scope.launch {
+            EventBus.events.collectLatest {
+                when (it.type) {
+                    EventType.SEND_CRYPTO_RESULT -> {
+                        (it as? SendCryptoResult)?.payload?.let { payload ->
+                            Timber.d("Integrator is sending SEND_CRYPTO_RESULT Event $payload")
+                            postMessage(SendCryptoResult(payload))
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
 
     override fun handlePostMessage(json: String) {
         val event = moshi
@@ -85,6 +113,23 @@ internal class RampPresenter(
                     }
                 }
             }
+
+            EventType.OFFRAMP_SALE_CREATED -> {
+                (event as? OfframpSaleCreated)?.payload?.let {
+                    scope.launch {
+                        EventBus.invokeEvent(OfframpSaleCreated(it))
+                    }
+                }
+            }
+
+            EventType.SEND_CRYPTO -> {
+                (event as? SendCrypto)?.payload?.let {
+                    scope.launch {
+                        EventBus.invokeEvent(SendCrypto(it))
+                    }
+                }
+            }
+
             EventType.WIDGET_CONFIG_DONE -> {
                 configDone = true
             }
@@ -97,6 +142,7 @@ internal class RampPresenter(
                 "/?hostAppName=${config.hostAppName}" +
                 "&hostLogoUrl=${config.hostLogoUrl}" +
                 concatenateIfNotBlank("&swapAsset=", config.swapAsset) +
+                concatenateIfNotBlank("&offrampAsset=", config.offrampAsset) +
                 concatenateIfNotBlank("&swapAmount=", config.swapAmount) +
                 concatenateIfNotBlank("&fiatCurrency=", config.fiatCurrency) +
                 concatenateIfNotBlank("&fiatValue=", config.fiatValue) +
@@ -106,6 +152,15 @@ internal class RampPresenter(
                 concatenateIfNotBlank("&defaultAsset=", config.defaultAsset) +
                 concatenateIfNotBlank("&webhookStatusUrl=", config.webhookStatusUrl) +
                 concatenateIfNotBlank("&hostApiKey=", config.hostApiKey) +
+                concatenateIfNotBlank("&defaultFlow=", config.defaultFlow.name) +
+                concatenateIfNotBlank("&offrampWebhookV3Url=", config.offrampWebhookV3Url) +
+                concatenateIfNotBlank(
+                    "&enabledFlows=",
+                    config.enabledFlows.joinToString(separator = ",") { it.name }) +
+                concatenateIfNotBlank(
+                    "&useSendCryptoCallbackVersion=",
+                    if (config.useSendCryptoCallback == true) Config.SEND_CRYPTO_CALLBACK_VERSION.toString() else ""
+                ) +
                 "&variant=$VARIANT" +
                 "&deepLinkScheme=$DEEP_LINK_SCHEME"
     }

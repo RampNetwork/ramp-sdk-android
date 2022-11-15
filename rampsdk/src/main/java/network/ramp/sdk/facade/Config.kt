@@ -36,6 +36,11 @@ data class Config(
      */
     var swapAsset: String = "",
 
+    /***
+     * An optional string parameter, works exactly the same as swapAsset but applies only for off-ramp.
+     */
+    var offrampAsset: String = "",
+
     /**
      * An optional int parameter that pre-sets the amount of crypto your user will buy.
      * If left blank, the user will choose the amount on their own.
@@ -94,6 +99,21 @@ data class Config(
      * An optional string parameter that allows our system to properly recognize and count purchases made through your API integration.
      * Example: "the API key you received"
      */
-    var hostApiKey: String = ""
+    var hostApiKey: String = "",
 
-) : Parcelable
+    var defaultFlow: Flow = Flow.ONRAMP,
+
+    var enabledFlows: Set<Flow> = setOf(Flow.ONRAMP),
+
+    var offrampWebhookV3Url: String = "",
+
+    var useSendCryptoCallback: Boolean? = null,
+
+    var useSendCryptoCallbackVersion: Int? = SEND_CRYPTO_CALLBACK_VERSION
+
+) : Parcelable{
+
+    companion object{
+        const val SEND_CRYPTO_CALLBACK_VERSION = 1
+    }
+}

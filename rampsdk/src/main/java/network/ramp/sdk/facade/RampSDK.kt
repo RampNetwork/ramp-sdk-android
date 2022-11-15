@@ -25,14 +25,27 @@ class RampSDK {
         handleEvents()
     }
 
-    fun startTransaction(activity: Activity, config: Config, callback: RampCallback) {
+    fun startTransaction(
+        activity: Activity,
+        config: Config,
+        callback: RampCallback,
+        url: String? = null
+    ) {
+        Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
         release()
         this.callback = callback
         val intent = Intent(activity, RampWidgetActivity::class.java)
         intent.putExtra(
             CONFIG_EXTRA, config
         )
+        intent.putExtra(URL_EXTRA, url)
         activity.startActivity(intent)
+    }
+
+    fun onOfframpCryptoSent(txHash: String? = null, error: String? = null) {
+        scope.launch {
+            EventBus.invokeEvent(SendCryptoResult(SendCryptoResultPayload(txHash, error)))
+        }
     }
 
     private fun handleEvents() {
@@ -53,6 +66,25 @@ class RampSDK {
                     EventType.PURCHASE_FAILED -> {
                         callback?.onPurchaseFailed()
                     }
+
+                    EventType.OFFRAMP_SALE_CREATED -> {
+                        val payload = (it as OfframpSaleCreated).payload
+                        callback?.onOfframpSaleCreated(
+                            payload.sale,
+                            payload.saleViewToken,
+                            payload.apiUrl
+                        )
+                    }
+
+                    EventType.SEND_CRYPTO -> {
+                        val payload = (it as SendCrypto).payload
+                        Timber.d("SEND CRYPTO : ${payload.address} ${payload.amount} ${payload.assetInfo}")
+                        callback?.offrampSendCrypto(
+                            assetInfo = payload.assetInfo,
+                            amount = payload.amount,
+                            address = payload.address
+                        )
+                    }
                     else -> {
                         Timber.w("Unhandled Event")
                     }
@@ -71,5 +103,6 @@ class RampSDK {
 
     companion object {
         internal const val CONFIG_EXTRA = "config"
+        internal const val URL_EXTRA = "url"
     }
 }
