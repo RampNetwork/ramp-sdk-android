@@ -1,8 +1,5 @@
 package network.ramp.sdk.ui.activity
 
-import android.content.Context
-import com.passbase.passbase_sdk.PassbaseSDK
-import com.passbase.passbase_sdk.PassbaseSDKListener
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import network.ramp.sdk.BuildConfig
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.facade.Config
@@ -18,12 +16,10 @@ import network.ramp.sdk.utils.UrlSafeChecker
 import timber.log.Timber
 
 internal class RampPresenter(
-    private val view: Contract.View,
-    private val context: Context
-) : Contract.Presenter, PassbaseSDKListener {
+    private val view: Contract.View
+) : Contract.Presenter {
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    private var kycInitPayload: KycInitPayload? = null
     private var configDone = false
 
     private val moshi: Moshi = Moshi.Builder()
@@ -93,12 +89,6 @@ internal class RampPresenter(
                 }
 
             }
-            EventType.KYC_INIT -> {
-                (event as? KycInit)?.payload?.let {
-                    Timber.d("kycInit $it ")
-                    runPassbase(it)
-                }
-            }
 
             EventType.PURCHASE_FAILED -> {
                 scope.launch {
@@ -162,79 +152,12 @@ internal class RampPresenter(
                     if (config.useSendCryptoCallback == true) Config.SEND_CRYPTO_CALLBACK_VERSION.toString() else ""
                 ) +
                 "&variant=$VARIANT" +
-                "&deepLinkScheme=$DEEP_LINK_SCHEME"
+                "&deepLinkScheme=$DEEP_LINK_SCHEME" +
+                "&sdkType=ANDROID" +
+                "&sdkVersion=${BuildConfig.VERSION}"
+
     }
 
-    private fun runPassbase(kycInit: KycInitPayload) {
-        val passbaseRef = PassbaseSDK(context)
-
-        kycInitPayload = kycInit
-        passbaseRef.initialize(
-            kycInit.apiKey
-        )
-        passbaseRef.prefillCountry = kycInit.countryCode
-        passbaseRef.prefillUserEmail = kycInit.email
-        kycInit.metaData?.let {
-            passbaseRef.metaData = it
-        }
-        passbaseRef.callback(this)
-        passbaseRef.startVerification()
-    }
-
-    override fun onError(errorCode: String) {
-
-        Timber.e("Passbase onError $errorCode")
-
-        val eventJson = moshi
-            .adapter(Event::class.java)
-            .toJson(
-                when (errorCode) {
-                    PASSBASE_CANCELLED_BY_USER -> KycAborted(
-                        KycAbortedPayload(
-                            kycInitPayload?.verificationId ?: 0
-                        )
-                    )
-                    else -> KycError(KycErrorPayload(kycInitPayload?.verificationId ?: 0))
-                }
-            )
-
-        view.sendPostMessage(eventJson)
-    }
-
-    override fun onFinish(identityAccessKey: String) {
-        val eventJson = moshi
-            .adapter(Event::class.java)
-            .toJson(
-                KycFinished(
-                    KycFinishedPayload(
-                        kycInitPayload?.verificationId ?: 0,
-                        identityAccessKey
-                    )
-                )
-            )
-        view.sendPostMessage(eventJson)
-    }
-
-    override fun onSubmitted(identityAccessKey: String) {
-        postMessage(
-            KycSubmitted(
-                KycSubmittedPayload(
-                    kycInitPayload?.verificationId ?: 0,
-                    identityAccessKey
-                )
-            )
-        )
-    }
-
-    override fun onStart() {
-        postMessage(
-            KycStarted(
-                KycStartedPayload(
-                    kycInitPayload?.verificationId ?: 0
-                )
-            )
-        )
-    }
 
     fun onBackPressed(systemOnBackPressed: () -> Unit) {
         if (configDone)
@@ -261,9 +184,9 @@ internal class RampPresenter(
     }
 
     companion object {
+//        const val VARIANT = "hosted-mobile"
         const val VARIANT = "sdk-mobile"
         const val DEEP_LINK_SCHEME = "ramp"
         const val LABEL_KEY_TYPE = "type"
-        const val PASSBASE_CANCELLED_BY_USER = "CANCELLED_BY_USER"
     }
 }
