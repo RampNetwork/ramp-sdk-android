@@ -43,7 +43,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = WidgetActivityBinding.inflate(layoutInflater)
-        WebView.setWebContentsDebuggingEnabled(true);
         setContentView(binding.root)
 
         rampPresenter = RampPresenter(this)
