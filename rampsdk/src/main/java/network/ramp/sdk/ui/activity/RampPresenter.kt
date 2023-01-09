@@ -184,7 +184,6 @@ internal class RampPresenter(
     }
 
     companion object {
-//        const val VARIANT = "hosted-mobile"
         const val VARIANT = "sdk-mobile"
         const val DEEP_LINK_SCHEME = "ramp"
         const val LABEL_KEY_TYPE = "type"
