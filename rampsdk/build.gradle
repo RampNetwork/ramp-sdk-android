@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 15
-        versionName "2.0.0"
+        versionName "2.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -86,7 +86,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.RampNetwork'
                 artifactId = 'ramp-sdk-android'
-                version = '2.0.0'
+                version = '2.0.1'
             }
         }
     }
