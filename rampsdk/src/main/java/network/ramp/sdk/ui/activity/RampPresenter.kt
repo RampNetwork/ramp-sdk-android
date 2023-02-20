@@ -32,18 +32,12 @@ internal class RampPresenter(
                 .withSubtype(WidgetConfigDone::class.java, EventType.WIDGET_CONFIG_DONE.name)
                 .withSubtype(WidgetConfigFailed::class.java, EventType.WIDGET_CONFIG_FAILED.name)
                 .withSubtype(BackButtonPressed::class.java, EventType.BACK_BUTTON_PRESSED.name)
-                .withSubtype(KycInit::class.java, EventType.KYC_INIT.name)
-                .withSubtype(KycStarted::class.java, EventType.KYC_STARTED.name)
-                .withSubtype(KycFinished::class.java, EventType.KYC_FINISHED.name)
-                .withSubtype(KycAborted::class.java, EventType.KYC_ABORTED.name)
-                .withSubtype(KycSubmitted::class.java, EventType.KYC_SUBMITTED.name)
                 .withSubtype(SendCrypto::class.java, EventType.SEND_CRYPTO.name)
                 .withSubtype(SendCryptoResult::class.java, EventType.SEND_CRYPTO_RESULT.name)
                 .withSubtype(
                     OfframpSaleCreated::class.java,
                     EventType.OFFRAMP_SALE_CREATED.name
                 )
-                .withSubtype(KycError::class.java, EventType.KYC_ERROR.name)
         )
         .add(KotlinJsonAdapterFactory())
         .build()
