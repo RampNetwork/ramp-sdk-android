@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import network.ramp.sdk.events.RampSdkJsInterface
 import network.ramp.sdk.events.RampSdkJsInterface.Companion.RampSdkInterfaceName
+import network.ramp.sdk.ui.activity.RampWidgetActivity
 
 
 internal class RampWidgetWebView @JvmOverloads constructor(
@@ -14,17 +15,18 @@ internal class RampWidgetWebView @JvmOverloads constructor(
 ) : WebView(context, attrs, defStyleAttr) {
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun setupWebView(wvClient: WebViewClient, jsInterface: RampSdkJsInterface?) {
+    fun setupWebView(activity: RampWidgetActivity, wvClient: WebViewClient, jsInterface: RampSdkJsInterface?) {
+        webChromeClient = RampWidgetWebViewChromeClient(activity)
+        webViewClient = wvClient
         settings.javaScriptEnabled = true
         settings.javaScriptCanOpenWindowsAutomatically = true
+        settings.allowContentAccess = true
         settings.domStorageEnabled = true
-        settings.mediaPlaybackRequiresUserGesture = false
         settings.setSupportMultipleWindows(true)
 
-        webViewClient = wvClient
+        settings.mediaPlaybackRequiresUserGesture = false
         jsInterface?.let {
             addJavascriptInterface(it, RampSdkInterfaceName)
         }
-        webChromeClient = RampWidgetWebViewChromeClient(context)
     }
 }

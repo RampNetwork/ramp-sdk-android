@@ -2,7 +2,9 @@ package network.ramp.sdk.ui.activity
 
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +18,7 @@ import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
 import timber.log.Timber
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.facade.RampSDK.Companion.URL_EXTRA
+import network.ramp.sdk.ui.webview.RampWidgetWebViewChromeClient.Companion.CAMERA_PERMISSION_REQUEST
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
 
@@ -40,12 +43,14 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = WidgetActivityBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        rampPresenter = RampPresenter(this, this)
-        binding.webView.setupWebView(RampWidgetWebViewClient(binding.progressBar), jsInterface)
-
+        rampPresenter = RampPresenter(this)
+        binding.webView.setupWebView(
+            this,
+            RampWidgetWebViewClient(binding.progressBar),
+            jsInterface
+        )
         intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
             config = it
         } ?: returnOnError("Config object cannot be null")
@@ -117,6 +122,22 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     private fun returnOnError(message: String) {
         Timber.e(message)
         finish()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == CAMERA_PERMISSION_REQUEST) {
+            for (i in grantResults.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    Timber.d("PERMISSION GRANTED ${permissions[i]}")
+            }
+
+        }
     }
 
     companion object {

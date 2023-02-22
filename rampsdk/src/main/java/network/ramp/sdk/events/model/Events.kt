@@ -31,24 +31,6 @@ internal data class WidgetConfigFailed(var payload: String?) : Event(EventType.W
 internal data class BackButtonPressed(var payload: String?) : Event(EventType.BACK_BUTTON_PRESSED)
 
 @JsonClass(generateAdapter = true)
-internal data class KycInit(var payload: KycInitPayload) : Event(EventType.KYC_INIT)
-
-@JsonClass(generateAdapter = true)
-internal data class KycStarted(var payload: KycStartedPayload) : Event(EventType.KYC_STARTED)
-
-@JsonClass(generateAdapter = true)
-internal data class KycFinished(var payload: KycFinishedPayload) : Event(EventType.KYC_FINISHED)
-
-@JsonClass(generateAdapter = true)
-internal data class KycAborted(var payload: KycAbortedPayload) : Event(EventType.KYC_ABORTED)
-
-@JsonClass(generateAdapter = true)
-internal data class KycSubmitted(var payload: KycSubmittedPayload) : Event(EventType.KYC_SUBMITTED)
-
-@JsonClass(generateAdapter = true)
-internal data class KycError(var payload: KycErrorPayload) : Event(EventType.KYC_ERROR)
-
-@JsonClass(generateAdapter = true)
 internal data class SendCrypto(
     var payload: SendCryptoPayload,
     var eventVersion: Int = SEND_CRYPTO_EVENT_VERSION
@@ -68,17 +50,11 @@ internal data class OfframpSaleCreated(var payload: OfframpSaleCreatedPayload) :
 enum class EventType {
     WIDGET_CLOSE,
     OPEN_LINK,
-    KYC_INIT,
     WIDGET_CONFIG_DONE,
     WIDGET_CONFIG_FAILED,
     BACK_BUTTON_PRESSED,
     PURCHASE_FAILED,
     PURCHASE_CREATED,
-    KYC_STARTED,
-    KYC_FINISHED,
-    KYC_ABORTED,
-    KYC_SUBMITTED,
-    KYC_ERROR,
     SEND_CRYPTO,
     SEND_CRYPTO_RESULT,
     OFFRAMP_SALE_CREATED

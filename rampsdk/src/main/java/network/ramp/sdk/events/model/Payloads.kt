@@ -17,37 +17,6 @@ data class WidgetClosePayload(
 )
 
 @JsonClass(generateAdapter = true)
-internal data class KycInitPayload(
-    val email: String,
-    val countryCode: String,
-    val verificationId: Int,
-    val metaData: String?,
-    val apiKey: String,
-    val provider: String
-)
-
-@JsonClass(generateAdapter = true)
-internal data class KycStartedPayload(var verificationId: Int = 0)
-
-@JsonClass(generateAdapter = true)
-internal data class KycFinishedPayload(
-    var verificationId: Int = 0,
-    var identityAccessKey: String = ""
-)
-
-@JsonClass(generateAdapter = true)
-internal data class KycAbortedPayload(var verificationId: Int = 0)
-
-@JsonClass(generateAdapter = true)
-internal data class KycSubmittedPayload(
-    var verificationId: Int = 0,
-    var identityAccessKey: String = ""
-)
-
-@JsonClass(generateAdapter = true)
-internal data class KycErrorPayload(var verificationId: Int = 0)
-
-@JsonClass(generateAdapter = true)
 internal data class SendCryptoPayload(
     var assetInfo: Asset,
     var amount: String = "",
