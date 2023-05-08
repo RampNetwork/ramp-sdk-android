@@ -29,6 +29,7 @@ class RampSDK {
         activity: Activity,
         config: Config,
         callback: RampCallback,
+        //@DEPRECATED to remove in next major release
         url: String? = null
     ) {
         Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
@@ -38,7 +39,6 @@ class RampSDK {
         intent.putExtra(
             CONFIG_EXTRA, config
         )
-        intent.putExtra(URL_EXTRA, url)
         activity.startActivity(intent)
     }
 
@@ -103,6 +103,5 @@ class RampSDK {
 
     companion object {
         internal const val CONFIG_EXTRA = "config"
-        internal const val URL_EXTRA = "url"
     }
 }
