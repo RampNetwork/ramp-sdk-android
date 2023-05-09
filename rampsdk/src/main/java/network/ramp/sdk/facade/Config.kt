@@ -22,7 +22,7 @@ data class Config(
 
     /**
      * An optional string parameter that allows you to use a non-production version of our widget.
-     * Example: "https://ri-widget-staging.firebaseapp.com"
+     * Example: "https://app.demo.ramp.network"
      */
     var url: String = DEFAULT_URL,
 
