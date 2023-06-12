@@ -22,9 +22,9 @@ data class Config(
 
     /**
      * An optional string parameter that allows you to use a non-production version of our widget.
-     * Example: "https://ri-widget-staging.firebaseapp.com"
+     * Example: "https://app.demo.ramp.network"
      */
-    val url: String = "https://buy.ramp.network",
+    var url: String = DEFAULT_URL,
 
     /**
      * An optional string parameter that sets a list of available crypto assets for user to choose from.
@@ -111,9 +111,14 @@ data class Config(
 
     var useSendCryptoCallbackVersion: Int? = SEND_CRYPTO_CALLBACK_VERSION
 
-) : Parcelable{
+) : Parcelable {
 
-    companion object{
+    init {
+        url = url.ifBlank { DEFAULT_URL }
+    }
+
+    companion object {
         const val SEND_CRYPTO_CALLBACK_VERSION = 1
+        const val DEFAULT_URL = "https://buy.ramp.network"
     }
 }

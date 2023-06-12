@@ -4,7 +4,6 @@ package network.ramp.sdk.ui.activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +16,6 @@ import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
 import timber.log.Timber
 import network.ramp.sdk.events.model.*
-import network.ramp.sdk.facade.RampSDK.Companion.URL_EXTRA
 import network.ramp.sdk.ui.webview.RampWidgetWebViewChromeClient.Companion.CAMERA_PERMISSION_REQUEST
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
@@ -31,8 +29,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     private lateinit var binding: WidgetActivityBinding
 
     private lateinit var config: Config
-
-    private var url: String? = null
 
     private val jsInterface = RampSdkJsInterface(
         onPostMessage = {
@@ -55,9 +51,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             config = it
         } ?: returnOnError("Config object cannot be null")
 
-        intent.extras?.getString(URL_EXTRA)?.let {
-            url = it
-        }
         if (savedInstanceState == null) {
             Timber.d(rampPresenter.buildUrl(config))
             securityCheck(intent)?.let {
