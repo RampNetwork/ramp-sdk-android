@@ -10,7 +10,7 @@ internal class UrlSafeCheckerTest {
     fun `isUrlSafe should return true fore safe urls`() {
         val safeUrl1 = "https://ri-widget-dev2.firebaseapp.com"
         val safeUrl2 = "https://ri-widget-staging.firebaseapp.com"
-        val safeUrl3 = "https://buy.ramp.network"
+        val safeUrl3 = "https://app.ramp.network"
         val safeUrl4 = "https://ri-widget-dev-5.firebaseapp.com"
         val safeUrl5 = "https://ri-widget-dev-42.firebaseapp.com"
         val safeUrl6 = "https://app.33.dev.ramp-network.org"

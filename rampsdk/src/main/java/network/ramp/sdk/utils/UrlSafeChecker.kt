@@ -5,7 +5,7 @@ object UrlSafeChecker {
     private val listOfSafeUrls = listOf(
         "https://ri-widget-dev2.firebaseapp.com",
         "https://ri-widget-staging.firebaseapp.com",
-        "https://buy.ramp.network",
+        "https://app.ramp.network",
         "https://app.dev.ramp-network.org",
         "https://app.demo.ramp.network",
         "https://app.ramp.network"

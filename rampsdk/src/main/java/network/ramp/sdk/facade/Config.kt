@@ -119,6 +119,6 @@ data class Config(
 
     companion object {
         const val SEND_CRYPTO_CALLBACK_VERSION = 1
-        const val DEFAULT_URL = "https://buy.ramp.network"
+        const val DEFAULT_URL = "https://app.ramp.network"
     }
 }
