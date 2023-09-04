@@ -1,9 +1,14 @@
 package network.ramp.sdk.ui.activity
 
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.webkit.ValueCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +29,20 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
+    private var filePathCallback: ValueCallback<Array<Uri>>? = null
+
+    private val fileChooserLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (filePathCallback != null && result.resultCode == Activity.RESULT_OK) {
+            val uris = result.data?.data?.let {
+                arrayOf(it)
+            } ?: arrayOf()
+            filePathCallback?.onReceiveValue(uris)
+            filePathCallback = null
+        }
+    }
+
     lateinit var rampPresenter: RampPresenter
 
     private lateinit var binding: WidgetActivityBinding
@@ -43,10 +62,11 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
         rampPresenter = RampPresenter(this)
         binding.webView.setupWebView(
-            this,
-            RampWidgetWebViewClient(binding.progressBar),
-            jsInterface
-        )
+            activity = this,
+            wvClient = RampWidgetWebViewClient(binding.progressBar),
+            jsInterface = jsInterface,
+            fileChooserLauncher = fileChooserLauncher
+        ) { filePathCallback = it }
         intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
             config = it
         } ?: returnOnError("Config object cannot be null")
