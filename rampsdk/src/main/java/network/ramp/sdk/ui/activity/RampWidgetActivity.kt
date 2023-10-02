@@ -34,13 +34,11 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
     private val fileChooserLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (filePathCallback != null && result.resultCode == Activity.RESULT_OK) {
-            val uris = result.data?.data?.let {
-                arrayOf(it)
-            } ?: arrayOf()
-            filePathCallback?.onReceiveValue(uris)
-            filePathCallback = null
-        }
+        val uris = result.data?.data?.let {
+            arrayOf(it)
+        } ?: arrayOf()
+        filePathCallback?.onReceiveValue(uris)
+        filePathCallback = null
     }
 
     lateinit var rampPresenter: RampPresenter
