@@ -2,9 +2,13 @@ package network.ramp.sdk.ui.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.AttributeSet
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.result.ActivityResultLauncher
 import network.ramp.sdk.events.RampSdkJsInterface
 import network.ramp.sdk.events.RampSdkJsInterface.Companion.RampSdkInterfaceName
 import network.ramp.sdk.ui.activity.RampWidgetActivity
@@ -15,8 +19,14 @@ internal class RampWidgetWebView @JvmOverloads constructor(
 ) : WebView(context, attrs, defStyleAttr) {
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun setupWebView(activity: RampWidgetActivity, wvClient: WebViewClient, jsInterface: RampSdkJsInterface?) {
-        webChromeClient = RampWidgetWebViewChromeClient(activity)
+    fun setupWebView(
+        activity: RampWidgetActivity,
+        wvClient: WebViewClient,
+        jsInterface: RampSdkJsInterface?,
+        fileChooserLauncher: ActivityResultLauncher<Intent>,
+        onFilePathCallback: (ValueCallback<Array<Uri>>?) -> Unit
+    ) {
+        webChromeClient = RampWidgetWebViewChromeClient(activity, fileChooserLauncher, onFilePathCallback)
         webViewClient = wvClient
         settings.javaScriptEnabled = true
         settings.javaScriptCanOpenWindowsAutomatically = true

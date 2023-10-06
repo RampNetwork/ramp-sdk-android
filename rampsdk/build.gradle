@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 17
-        versionName "3.0.3"
+        versionCode 18
+        versionName "3.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
         buildConfigField 'String', 'VERSION',  "\"${defaultConfig.versionName}\""
@@ -84,7 +84,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.RampNetwork'
                 artifactId = 'ramp-sdk-android'
-                version = '3.0.3'
+                version = '3.0.4'
             }
         }
     }

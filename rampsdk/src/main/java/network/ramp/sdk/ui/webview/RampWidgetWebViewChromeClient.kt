@@ -5,18 +5,22 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Message
 import android.webkit.PermissionRequest
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import network.ramp.sdk.ui.activity.RampWidgetActivity.Companion.ACTION_VIEW_INTENT
-import timber.log.Timber
 
 
-internal class RampWidgetWebViewChromeClient(val activity: Activity) : WebChromeClient() {
+internal class RampWidgetWebViewChromeClient(
+    val activity: Activity,
+    private val fileChooserLauncher: ActivityResultLauncher<Intent>,
+    private var onFilePathCallback: (ValueCallback<Array<Uri>>?) -> Unit
+) : WebChromeClient() {
 
     override fun onCreateWindow(
         view: WebView?,
@@ -52,11 +56,26 @@ internal class RampWidgetWebViewChromeClient(val activity: Activity) : WebChrome
                 if (!hasCameraPermission()) {
                     requestPermissions()
                     request.deny()
-                }
-                else
+                } else
                     request.grant(request.resources)
             }
         }
+    }
+
+    override fun onShowFileChooser(
+        webView: WebView?,
+        filePath: ValueCallback<Array<Uri>>,
+        fileChooserParams: FileChooserParams
+    ): Boolean {
+        onFilePathCallback(filePath)
+
+        val intent = fileChooserParams.createIntent()
+        try {
+            fileChooserLauncher.launch(intent)
+        } catch (e: Exception) {
+            return false
+        }
+        return true
     }
 
     private fun hasCameraPermission() =
@@ -72,7 +91,6 @@ internal class RampWidgetWebViewChromeClient(val activity: Activity) : WebChrome
             CAMERA_PERMISSION_REQUEST
         )
     }
-
 
     companion object {
         const val CAMERA_PERMISSION_REQUEST = 1
