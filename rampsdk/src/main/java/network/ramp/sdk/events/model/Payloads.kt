@@ -52,11 +52,11 @@ data class Purchase(
     val escrowAddress: String? = null, // filled only for escrow-backend purchases
     val cryptoAmount: String, // number-string, in wei or token units
     val fiatCurrency: String, // three-letter currency code
-    val fiatValue: Long, // total value the user pays for the purchase, in fiatCurrency
+    val fiatValue: Double, // total value the user pays for the purchase, in fiatCurrency
     @Deprecated("This parameter will be removed in future")
     val assetExchangeRateEur: Double,
     @Deprecated("This parameter will be removed in future")
-    val fiatExchangeRateEur: Long,
+    val fiatExchangeRateEur: Double,
     val baseRampFee: Double, // base Ramp fee before any modifications, in fiatCurrency
     val networkFee: Double, // network fee for transferring the purchased asset, in fiatCurrency
     val appliedFee: Double, // final fee the user pays (included in fiatValue), in fiatCurrency
