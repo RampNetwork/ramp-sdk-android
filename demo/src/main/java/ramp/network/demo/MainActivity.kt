@@ -34,15 +34,12 @@ class MainActivity : AppCompatActivity() {
             val config = Config(
                 hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",
                 hostAppName = "My App",
-                url = "https://app.dev.ramp-network.org",
-                hostApiKey = "3qncr4yvxfpro6endeaeu6npkh8qc23e9uadtazq",
+                url = "https://app.demo.ramp.network",
+                hostApiKey = "your host api key",
                 enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
             )
             // 4. Implement callbacks
             val callback = object : RampCallback {
-                override fun onPurchaseFailed() {
-                    Log.d("MainActivity", "onPurchaseFailed")
-                }
 
                 override fun onPurchaseCreated(
                     purchase: Purchase,

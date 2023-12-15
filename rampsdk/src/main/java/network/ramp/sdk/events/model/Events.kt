@@ -10,7 +10,7 @@ sealed class Event(val type: EventType) {
 }
 
 @JsonClass(generateAdapter = true)
-data class Close(var payload: WidgetClosePayload? = null) : Event(EventType.CLOSE)
+data class Close(var payload: WidgetClosePayload? = null) : Event(EventType.CLOSE) // TO_VERIFY Not in documentation but in received events
 @JsonClass(generateAdapter = true)
 data class WidgetClose(var payload: WidgetClosePayload? = null) : Event(EventType.WIDGET_CLOSE)
 

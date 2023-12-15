@@ -109,7 +109,7 @@ data class Config(
 
     var useSendCryptoCallback: Boolean? = null,
 
-    var useSendCryptoCallbackVersion: Int? = SEND_CRYPTO_CALLBACK_VERSION
+    var useSendCryptoCallbackVersion: Int? = SEND_CRYPTO_CALLBACK_VERSION // TO_VERIFY() Not in the documentation. Should it stay?
 
 ) : Parcelable {
 

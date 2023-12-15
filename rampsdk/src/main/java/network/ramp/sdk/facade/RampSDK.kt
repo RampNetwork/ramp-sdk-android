@@ -63,9 +63,6 @@ class RampSDK {
                             payload.apiUrl
                         )
                     }
-                    EventType.PURCHASE_FAILED -> {
-                        callback?.onPurchaseFailed()
-                    }
 
                     EventType.OFFRAMP_SALE_CREATED -> {
                         val payload = (it as OfframpSaleCreated).payload
