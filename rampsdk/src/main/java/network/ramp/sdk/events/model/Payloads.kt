@@ -48,15 +48,9 @@ data class OfframpSaleCreatedPayload(
 data class Purchase(
     val id: String,
     val endTime: String, // purchase validity time, ISO date-time string
-    @Deprecated("This parameter will be removed in future release")
-    val escrowAddress: String? = null, // filled only for escrow-backend purchases
     val cryptoAmount: String, // number-string, in wei or token units
     val fiatCurrency: String, // three-letter currency code
     val fiatValue: Double, // total value the user pays for the purchase, in fiatCurrency
-    @Deprecated("This parameter will be removed in future")
-    val assetExchangeRateEur: Double,
-    @Deprecated("This parameter will be removed in future")
-    val fiatExchangeRateEur: Double,
     val baseRampFee: Double, // base Ramp fee before any modifications, in fiatCurrency
     val networkFee: Double, // network fee for transferring the purchased asset, in fiatCurrency
     val appliedFee: Double, // final fee the user pays (included in fiatValue), in fiatCurrency
@@ -65,8 +59,6 @@ data class Purchase(
     val asset: Asset, // description of the purchased asset (address, symbol, name, decimals)
     val receiverAddress: String, // blockchain address of the buyer
     val assetExchangeRate: Double,// price of 1 whole token of purchased asset, in fiatCurrency
-    @Deprecated("This parameter will be removed in future")
-    val purchaseViewToken: String,
     val status: String, // purchase status
     val paymentMethodType: String, // type of payment method used to pay for the swap: 'MANUAL_BANK_TRANSFER' | 'AUTO_BANK_TRANSFER' | 'CARD_PAYMENT' | 'APPLE_PAY'
     val finalTxHash: String? = null // hash of the crypto transfer blockchain transaction, filled once available
@@ -97,8 +89,10 @@ data class Fiat(
 data class Asset(
     val address: String? = null, // 0x-prefixed address for ERC-20 tokens, `null` for ETH
     val symbol: String, // asset symbol, for example `ETH`, `DAI`, `USDC`
+    val apiV3Symbol: String, // asset symbol in API v3
     val name: String,
     val decimals: Long, // token decimals, e.g. 18 for ETH/DAI, 6 for USDC
     val type: String, // asset type & network, e.g. `ETH`, `ERC20`, `MATIC_ERC20`
-    val chain: String // asset chain, for example `ETH`, `BSC`, `POLKADOT`
+    val chain: String, // asset chain, for example `ETH`, `BSC`, `POLKADOT`
+    val apiV3Type: String // asset type in API v3
 ) : Parcelable
