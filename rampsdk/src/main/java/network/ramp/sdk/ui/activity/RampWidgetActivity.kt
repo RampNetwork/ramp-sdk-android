@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -14,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import network.ramp.sdk.BuildConfig
 import network.ramp.sdk.databinding.WidgetActivityBinding
 import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.RampSdkJsInterface
@@ -21,6 +23,7 @@ import network.ramp.sdk.facade.Config
 import network.ramp.sdk.facade.RampSDK.Companion.CONFIG_EXTRA
 import timber.log.Timber
 import network.ramp.sdk.events.model.*
+import network.ramp.sdk.facade.RampSDK.Companion.URL_EXTRA
 import network.ramp.sdk.ui.webview.RampWidgetWebViewChromeClient.Companion.CAMERA_PERMISSION_REQUEST
 import network.ramp.sdk.ui.webview.RampWidgetWebViewClient
 
@@ -45,7 +48,9 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
 
     private lateinit var binding: WidgetActivityBinding
 
-    private lateinit var config: Config
+    private var config: Config? = null
+
+    private var url: String? = ""
 
     private val jsInterface = RampSdkJsInterface(
         onPostMessage = {
@@ -65,23 +70,36 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             jsInterface = jsInterface,
             fileChooserLauncher = fileChooserLauncher
         ) { filePathCallback = it }
+
         intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
             config = it
-        } ?: returnOnError("Config object cannot be null")
+        }
+
+        url = intent.extras?.getString(URL_EXTRA)
 
         if (savedInstanceState == null) {
-            Timber.d(rampPresenter.buildUrl(config))
-            securityCheck(intent)?.let {
-                binding.webView.loadUrl(it)
-            } ?: close()
+            config?.let {
+                Timber.d(rampPresenter.buildUrl(it))
+            }
+
+            val safeUrl = securityCheck(intent, config)
+
+            when {
+                !url.isNullOrBlank() && rampPresenter.isUrlSafe(url!!) -> binding.webView.loadUrl(url!!)
+
+                safeUrl != null -> binding.webView.loadUrl(safeUrl)
+
+                else -> {
+                    returnOnError("UNAUTHORIZED CALL")
+                }
+            }
         }
     }
 
-    private fun securityCheck(intent: Intent): String? =
-        if (isInternalIntent(intent) && rampPresenter.isUrlSafe(config.url))
+    private fun securityCheck(intent: Intent, config: Config?): String? =
+        if (config != null && isInternalIntent(intent) && rampPresenter.isUrlSafe(config.url))
             rampPresenter.buildUrl(config)
         else {
-            Timber.e("SECURITY ALERT - UNAUTHORIZED CALL")
             null
         }
 
@@ -147,7 +165,6 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
                     Timber.d("PERMISSION GRANTED ${permissions[i]}")
             }
-
         }
     }
 

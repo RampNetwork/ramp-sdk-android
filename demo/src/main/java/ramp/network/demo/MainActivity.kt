@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
                 hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",
                 hostAppName = "My App",
                 url = "https://app.demo.ramp.network",
-                hostApiKey = "your host api key",
+                hostApiKey = "udr4csh6vje38gvndow6p3f32j3zq3jbkfgrsn22",
+                userAddress = "0x81A4362705891615d7395135d5591BaaC9f21d3D",
+                swapAsset = "GOERLI_ETH",
                 enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
             )
             // 4. Implement callbacks
