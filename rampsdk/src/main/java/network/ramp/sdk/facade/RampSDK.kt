@@ -12,6 +12,7 @@ import network.ramp.sdk.events.EventBus
 import network.ramp.sdk.events.model.*
 import network.ramp.sdk.ui.activity.RampWidgetActivity
 import timber.log.Timber
+import java.net.URL
 
 class RampSDK {
 
@@ -28,9 +29,7 @@ class RampSDK {
     fun startTransaction(
         activity: Activity,
         config: Config,
-        callback: RampCallback,
-        //@DEPRECATED to remove in next major release
-        url: String? = null
+        callback: RampCallback
     ) {
         Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
         release()
@@ -38,6 +37,21 @@ class RampSDK {
         val intent = Intent(activity, RampWidgetActivity::class.java)
         intent.putExtra(
             CONFIG_EXTRA, config
+        )
+        activity.startActivity(intent)
+    }
+
+    fun startTransactionWithUrl(
+        activity: Activity,
+        callback: RampCallback,
+        url: String = ""
+    ) {
+        Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
+        release()
+        this.callback = callback
+        val intent = Intent(activity, RampWidgetActivity::class.java)
+        intent.putExtra(
+            URL_EXTRA, url
         )
         activity.startActivity(intent)
     }
@@ -62,9 +76,6 @@ class RampSDK {
                             payload.purchaseViewToken,
                             payload.apiUrl
                         )
-                    }
-                    EventType.PURCHASE_FAILED -> {
-                        callback?.onPurchaseFailed()
                     }
 
                     EventType.OFFRAMP_SALE_CREATED -> {
@@ -103,5 +114,6 @@ class RampSDK {
 
     companion object {
         internal const val CONFIG_EXTRA = "config"
+        internal const val URL_EXTRA = "url"
     }
 }

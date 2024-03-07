@@ -26,6 +26,7 @@ internal class RampPresenter(
         .add(
             PolymorphicJsonAdapterFactory.of(Event::class.java, LABEL_KEY_TYPE)
                 .withSubtype(OpenLink::class.java, EventType.OPEN_LINK.name)
+                .withSubtype(Close::class.java, EventType.CLOSE.name)
                 .withSubtype(WidgetClose::class.java, EventType.WIDGET_CLOSE.name)
                 .withSubtype(PurchasedFailed::class.java, EventType.PURCHASE_FAILED.name)
                 .withSubtype(PurchasedCreated::class.java, EventType.PURCHASE_CREATED.name)
@@ -68,15 +69,18 @@ internal class RampPresenter(
             .fromJson(json)
 
         when (event?.type) {
-            EventType.WIDGET_CLOSE -> {
-                (event as? WidgetClose)?.payload?.let {
-                    if (it.showAlert)
-                        view.showDialog()
-                    else {
-                        view.close()
-                    }
+            EventType.CLOSE -> {
+                (event as? Close)?.payload?.let {
+                    showDialogOrClose(it.showAlert)
                 }
             }
+
+            EventType.WIDGET_CLOSE -> {
+                (event as? WidgetClose)?.payload?.let {
+                    showDialogOrClose(it.showAlert)
+                }
+            }
+
             EventType.OPEN_LINK -> {
                 (event as? OpenLink)?.payload?.let {
                     Timber.d("onOpenUrl ${it.linkType} ${it.url} ")
@@ -117,6 +121,7 @@ internal class RampPresenter(
             EventType.WIDGET_CONFIG_DONE -> {
                 configDone = true
             }
+
             else -> Timber.w("Unhandled event $json")
         }
     }
@@ -163,6 +168,14 @@ internal class RampPresenter(
     }
 
     fun isUrlSafe(url: String): Boolean = UrlSafeChecker.isUrlSafe(url)
+
+    private fun showDialogOrClose(showAlert: Boolean) {
+        if (showAlert)
+            view.showDialog()
+        else {
+            view.close()
+        }
+    }
 
     fun <T : Event> postMessage(event: T) {
         val eventJson = moshi
