@@ -1,11 +1,9 @@
 package network.ramp.sdk.ui.activity
 
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.webkit.ValueCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -84,7 +82,7 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             val safeUrl = securityCheck(intent, config)
 
             when {
-                !url.isNullOrBlank() && rampPresenter.isUrlSafe(url!!) -> binding.webView.loadUrl(url!!)
+                !url.isNullOrBlank() -> binding.webView.loadUrl(url!!)
 
                 safeUrl != null -> binding.webView.loadUrl(safeUrl)
 
