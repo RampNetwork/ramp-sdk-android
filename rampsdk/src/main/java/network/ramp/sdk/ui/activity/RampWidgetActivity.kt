@@ -1,7 +1,6 @@
 package network.ramp.sdk.ui.activity
 
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -65,15 +64,18 @@ internal class RampWidgetActivity : AppCompatActivity(), Contract.View {
             jsInterface = jsInterface,
             fileChooserLauncher = fileChooserLauncher
         ) { filePathCallback = it }
-        intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
-            config = it
-        } ?: returnOnError("Config object cannot be null")
-
-        if (savedInstanceState == null) {
-            Timber.d(rampPresenter.buildUrl(config))
-            securityCheck(intent)?.let {
-                binding.webView.loadUrl(it)
-            } ?: close()
+        try {
+            intent.extras?.getParcelable<Config>(CONFIG_EXTRA)?.let {
+                config = it
+            } ?: returnOnError("Config object cannot be null")
+            if (savedInstanceState == null) {
+                Timber.d(rampPresenter.buildUrl(config))
+                securityCheck(intent)?.let {
+                    binding.webView.loadUrl(it)
+                } ?: close()
+            }
+        } catch (ex: Exception) {
+            returnOnError(ex.message ?: "Exception during retrieving intent data")
         }
     }
 
