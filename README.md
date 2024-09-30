@@ -1,6 +1,6 @@
-# Ramp Android SDK
+# Ramp Network Android SDK
 
-Ramp Android SDK is a library that allows you to easily integrate the Ramp widget into your mobile app and communicate with it.
+Ramp Network Android SDK is a library that allows you to easily integrate the Ramp Network's widget into your mobile app and communicate with it.
 
 ## Documentation
 

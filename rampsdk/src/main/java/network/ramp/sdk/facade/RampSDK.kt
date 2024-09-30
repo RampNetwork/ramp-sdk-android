@@ -32,7 +32,7 @@ class RampSDK {
         //@DEPRECATED to remove in next major release
         url: String? = null
     ) {
-        Timber.d("RAMP SDK version - ${BuildConfig.VERSION}")
+        Timber.d("Ramp Network SDK version - ${BuildConfig.VERSION}")
         release()
         this.callback = callback
         val intent = Intent(activity, RampWidgetActivity::class.java)
