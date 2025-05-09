@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             // 3. Fill configuration object with your data
             val config = Config(
-                hostLogoUrl = "https://ramp.network/assets/images/Logo.svg",
+                hostLogoUrl = "https://assets.rampnetwork.com/misc/ramp-network-logo.svg",
                 hostAppName = "My App",
-                url = "https://app.demo.ramp.network",
+                url = "https://app.demo.rampnetwork.com",
                 hostApiKey = "your host api key",
                 enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
             )

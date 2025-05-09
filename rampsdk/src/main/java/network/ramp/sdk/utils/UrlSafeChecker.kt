@@ -6,9 +6,10 @@ object UrlSafeChecker {
         "https://ri-widget-dev2.firebaseapp.com",
         "https://ri-widget-staging.firebaseapp.com",
         "https://app.ramp.network",
+        "https://app.rampnetwork.com",
         "https://app.dev.ramp-network.org",
         "https://app.demo.ramp.network",
-        "https://app.ramp.network",
+        "https://app.demo.rampnetwork.com",
         "https://app.pepe.ramp-network.org"
     )
     private val listOfSafeRegex = listOf("^https://ri-widget-dev-(\\d+)\\.firebaseapp\\.com$", "^https://app.(\\d+)\\.dev\\.ramp-network\\.org")
