@@ -22,7 +22,7 @@ data class Config(
 
     /**
      * An optional string parameter that allows you to use a non-production version of our widget.
-     * Example: "https://app.demo.ramp.network"
+     * Example: "https://app.demo.rampnetwork.com"
      */
     var url: String = DEFAULT_URL,
 
@@ -31,7 +31,7 @@ data class Config(
      * If passed with a single asset, this parameter pre-sets the given asset for the user as the only option.
      * If passed as a list (for example, swapAsset="DAI,ETH,USDC"), it sets the available assets to the user with the first asset as the default selection.
      * If left blank, the user will choose an asset on their own from all available assets.
-     * The list of all available assets can be accessed with GET /host-api/assets endpoint. [https://docs.ramp.network/rest-api-reference/#available-assets-and-prices]
+     * The list of all available assets can be accessed with GET /host-api/assets endpoint. [https://docs.rampnetwork.com/rest-api-reference/#available-assets-and-prices]
      * Example: "ETH"
      */
     var swapAsset: String = "",
@@ -90,7 +90,7 @@ data class Config(
 
 
     /**
-     * An optional string parameter that allows you to subscribe to events via webhooks [https://docs.ramp.network/webhooks].
+     * An optional string parameter that allows you to subscribe to events via webhooks [https://docs.rampnetwork.com/webhooks].
      * Example: "https://example.com/webhook/"
      */
     var webhookStatusUrl: String = "",
@@ -119,6 +119,6 @@ data class Config(
 
     companion object {
         const val SEND_CRYPTO_CALLBACK_VERSION = 1
-        const val DEFAULT_URL = "https://app.ramp.network"
+        const val DEFAULT_URL = "https://app.rampnetwork.com"
     }
 }
