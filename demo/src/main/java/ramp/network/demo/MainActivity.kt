@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val config = Config(
                 hostLogoUrl = "https://assets.rampnetwork.com/misc/ramp-network-logo.svg",
                 hostAppName = "My App",
-                url = "https://app.demo.rampnetwork.com",
+                url = "https://app.dev.ramp-network.org",
                 hostApiKey = "your host api key",
                 enabledFlows = setOf(Flow.OFFRAMP, Flow.ONRAMP)
             )

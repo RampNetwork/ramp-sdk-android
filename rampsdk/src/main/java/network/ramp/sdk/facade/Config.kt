@@ -22,7 +22,7 @@ data class Config(
 
     /**
      * An optional string parameter that allows you to use a non-production version of our widget.
-     * Example: "https://app.demo.rampnetwork.com"
+     * Example: "https://app.dev.ramp-network.org"
      */
     var url: String = DEFAULT_URL,
 
